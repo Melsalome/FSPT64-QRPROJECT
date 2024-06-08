@@ -1,12 +1,15 @@
+
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom"
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 
+
 const Login = () => {
 	const { store, actions } = useContext(Context);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
 	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
 
@@ -122,3 +125,4 @@ export default Login
 
 // };
 // export default Login
+

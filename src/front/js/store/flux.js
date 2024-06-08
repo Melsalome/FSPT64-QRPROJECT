@@ -1,9 +1,11 @@
 import loginDispatcher from "./dispatcherLogin";
 import signupDispatcher from "./dispatcherSignup";
 
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+
 			token: null,
 			register: null,
 			
@@ -23,6 +25,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 if (token) {
                     sessionStorage.setItem("token", token);
                     setStore({ token: token })}},
+
 
 			handleLogOut: () => {
 				sessionStorage.removeItem("token")

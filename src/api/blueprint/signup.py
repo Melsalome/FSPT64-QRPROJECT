@@ -1,12 +1,15 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt, jwt_required, create_access_token
+
 from api.modelUser import User, db
+
 
 signup_bp = Blueprint('signup', __name__)
 
 @signup_bp.route('/signup', methods=['POST'])
 def handle_signup():
     data = request.get_json()
+
    
     if User.query.filter_by(email = data["Email"]).first():
         return jsonify('User already exist')
@@ -22,4 +25,5 @@ def handle_signup():
     
     
     return jsonify({ "user": new_user.serialize() })
+
 
