@@ -1,0 +1,19 @@
+.kitchen-card {
+  background-color: pink; 
+  border: 1px solid #ddd; 
+  border-radius: 10px; 
+  padding: 20px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); 
+}
+
+.kitchen-card h2 {
+  margin: 0 0 10px; /* Espacio debajo del título */
+}
+
+.kitchen-card p {
+  margin: 0 0 10px; /* Espacio debajo de los párrafos */
+}
+
+.kitchen-card ul {
+  padding-left: 20px; /* Espacio a la izquierda de la lista */
+}
