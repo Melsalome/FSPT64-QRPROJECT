@@ -6,37 +6,42 @@ import { Navigate, useNavigate } from "react-router-dom";
 import KitchenCard from "../component/kitchenCard";
 
 
-const kitchenview = () => {
+const KitchenView = () => {
 const {store, actions} = useContext(Context)
-const pedidos = [
+const [pedidos, setPedidos] = useState([
     { 
         id: 1,
         table: 2,
         menu: [
            "pulpo a la gallega", "gazpacho", "brownie"
-           
         ],
-        comensales: 3
-   
-       },
+        comensales: 3,
+        completed: false
+    },
+    { 
+        id: 2,
+        table: 3,
+        menu: [
+           "pizza napolitana", "sopa", "tarta de limón"
+        ],
+        comensales: 4,
+        completed: false
+    },
+]);
 
-    //    { 
-    //     id: 2,
-    //     table: 3,
-    //     menu: [
-    //        "pizza napolitana", "sopa", "tarta de limón"
-           
-    //     ],
-    //     comensales: 4
-   
-    //    },
-       
-       
-]
+const completeOrder = (id) => {
+    setPedidos(pedidos.map(pedido => 
+        pedido.id === id ? {...pedido, completed: true} : pedido
+    ));
+}
+
+const deleteOrder = (id) => {
+    setPedidos(pedidos.filter(pedido => pedido.id !== id));
+}
 
 return (
     <div className="container1">
-        <p>hola</p>
+        <p>hola mundo</p>
       {pedidos.map(pedido => (
         <div key={pedido.id}>
           <KitchenCard pedido={pedido} /> 
@@ -47,6 +52,6 @@ return (
       ))}
     </div>
   );
-
 }
-export default kitchenview
+
+export default KitchenView;
