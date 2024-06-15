@@ -1,27 +1,6 @@
 import React from 'react';
 import '../../styles/kitchenCard.css';
 
-// const kitchenCard = ({pedidos}) => {
-//     // const { id, table, menu, comensales, preparationTime } = order;
-
-//     return (
-//         <>
-//         {pedidos.map((pedido)=> {
-//             <div className="kitchen-card">
-//             <h2>Comanda {id}</h2>
-//             <p>Número de mesa: {table}</p>
-//             <p>Número de comensales: {comensales}</p>
-//             <p>Menú:</p>
-//             <p>Tiempo de preparación: {preparationTime} minutos</p>
-//         </div>
-//             <li key={index}>{item}</li>
-//         }
-//         ))
-//       </>
-//     );
-// };
-
-// export default kitchenCard;
 
 const KitchenCard = ({ pedidos }) => {
     return (
@@ -45,3 +24,4 @@ const KitchenCard = ({ pedidos }) => {
 };
 
 export default KitchenCard;
+

@@ -19,3 +19,14 @@ body{background-image:none;}
   justify-content: space-between;
   padding: 16px;
 }
+.pedidos{
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap:20px; /* Espacio entre las tarjetas */
+  padding: 20px;
+  width: 80%;
+  border: 2px solid red;
+}
