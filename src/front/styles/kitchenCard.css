@@ -1,14 +1,15 @@
-.container1 {
+ body{background-color: black;} 
+/* .container1 {
   display: flex;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 20px; /* Espacio entre las tarjetas */
-  padding: 20px; /* Espacio alrededor del grid */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 20px; 
+  padding: 20px; 
 }
 
 .kitchen-card {
   background-color: pink; 
-  /* border: 1px solid #ddd;  */
+  border: 1px solid #ddd; 
   border-radius: 10px; 
   padding: 20px; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); 
@@ -24,4 +25,57 @@
 
 .kitchen-card ul {
   padding-left: 20px; 
+} */ 
+
+  
+.kitchen-card-container {
+  display: flex;
+  justify-content: space-between;
+  /* grid-template-columns: repeat(5, 1fr);  
+  grid-template-rows: repeat(2, 1fr);  */
+
+  padding: 16px;
+  height: max-content;
+  flex-wrap: wrap;
+}
+
+.kitchen-card {
+  background-color: #f1edde;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  border: 4px solid #080303;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content:space-between;
+  flex-direction: column;
+  flex-basis: calc(20% - 32px);
+  margin-bottom: 16px;
+  width: 200px;
+  
+ 
+}
+
+.kitchen-card h2 {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.kitchen-card p {
+  margin: 4px 0;
+}
+
+.kitchen-card .menu {
+  margin-top: 8px;
+  flex-grow: 1; /* Para que el menú ocupe el espacio disponible */
+}
+
+.kitchen-card .menu-item {
+  list-style-type: none;
+  padding: 4px 0;
+  border-top: 1px solid #eee;
+}
+
+.kitchen-card .menu-item:first-child {
+  border-top: none;
 }

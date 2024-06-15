@@ -41,10 +41,10 @@ const deleteOrder = (id) => {
 
 return (
     <div className="container1">
-        <p>hola mundo</p>
+      
       {pedidos.map(pedido => (
         <div key={pedido.id}>
-          <KitchenCard pedido={pedido} /> 
+          <KitchenCard pedidos={pedidos} /> 
           <p style={{ textDecoration: pedido.completed ? 'line-through' : 'none' }}>{pedido.menu}</p>
           <button onClick={() => completeOrder(pedido.id)}>Completar pedido</button>
           {pedido.completed && <button onClick={() => deleteOrder(pedido.id)}>Borrar comanda</button>}
