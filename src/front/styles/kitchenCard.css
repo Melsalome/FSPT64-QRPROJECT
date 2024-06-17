@@ -1,14 +1,14 @@
- body{background-color: black;} 
+ body{background-color:black;} 
   
 .kitchen-card-container {
   display: flex;
   justify-content: space-between;
-  grid-template-columns: repeat(5, 1fr);  
-  grid-template-rows: repeat(2, 1fr); 
+  /* grid-template-columns: repeat(5, 1fr);  
+  grid-template-rows: repeat(2, 1fr);  */
 
   padding: 16px;
-  height: max-content;
-  flex-wrap: wrap;
+  /* height: max-content; */
+  /* flex-wrap: wrap; */
 }
 
 .kitchen-card {
@@ -24,6 +24,8 @@
   flex-basis: calc(20% - 32px);
   margin-bottom: 16px;
   width: 200px;
+  min-height: 400px;
+  max-height: 400px;
   
  
 }
@@ -54,4 +56,19 @@
 
 .completed {
   text-decoration: line-through;
+}
+
+.completar{
+  width: 200px;
+  border-radius: 6px;
+}
+.completar:hover{
+  background-color: #dbb52d;
+  width: 200px;
+  border-radius: 6px;
+}
+
+.borrar{
+  width: 200px;
+ border-radius: 6px   
 }

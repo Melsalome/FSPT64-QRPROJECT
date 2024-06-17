@@ -16,17 +16,19 @@ body{background-image:none;}
   height: 100vh; /* vh significa viewport height, que es la altura de la ventana de visualización */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   padding: 16px;
+  flex:1 1 100%;
+
 }
 .pedidos{
   display: flex;
-  /* flex-direction: column; */
-  justify-content: space-between;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; 
+  /* grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr); */
   gap:20px; /* Espacio entre las tarjetas */
   padding: 20px;
-  width: 80%;
-  border: 2px solid red;
+  width: fit-content;
+  /* border: 2px solid red; */
 }

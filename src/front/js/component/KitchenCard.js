@@ -2,11 +2,11 @@ import React from 'react';
 import '../../styles/kitchenCard.css';
 
 
-const KitchenCard = ({ pedidos }) => {
+const KitchenCard = ({ pedido }) => {
     return (
         <>
-            {pedidos.map((pedido, index) => (
-                <div key={index} className="kitchen-card">
+            
+                <div className="kitchen-card">
                     <h2>Comanda {pedido.id}</h2>
                     <p>Número de mesa: {pedido.table}</p>
                     <p>Número de comensales: {pedido.comensales}</p>
@@ -17,8 +17,9 @@ const KitchenCard = ({ pedidos }) => {
                         ))}
                     </ul>
                     <p>Tiempo de preparación: {pedido.preparationTime} minutos</p>
+                    
                 </div>
-            ))}
+           
         </>
     );
 };
