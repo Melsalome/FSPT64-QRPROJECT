@@ -9,7 +9,7 @@
 }
 
 .kitchen-card {
-  background-color: #f1edde;
+  background-color:antiquewhite;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
@@ -17,7 +17,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content:space-between;
-  flex-direction: column;
+  flex-direction: column; 
   flex-basis: calc(20% - 32px);
   margin-bottom: 16px;
   width: 200px;
@@ -57,17 +57,49 @@
 
 .completar:hover{
   background-color: rgb(192, 243, 162);
-  width: 200px;
+  max-width:200px;
   border-radius: 6px;
 }
 
-.borrar:hover{
+/* .borrar:hover{
  width: 200px;
  border-radius: 6px;   
  background-color: rgb(243, 162, 162);
-}
+} */
 .kitchen-card .timer {
   font-size:small;
   color:black;
   margin-top: 10px; /* Agrega un margen en la parte superior del temporizador */
+}
+.kitchen-card ul {
+  list-style-type: none !important;
+}
+.boton-tarjeta {
+  width: 100%; /* Esto hará que el botón tenga el ancho completo de su contenedor */
+  box-sizing: border-box; /* Esto hará que el padding y el borde del botón se incluyan en su ancho total */
+  position: relative;
+  white-space: nowrap; /* Esto evitará que el texto del botón se envuelva a la línea siguiente */
+  text-overflow: ellipsis; /* Esto hará que el texto que se desborde se recorte y se muestre con puntos suspensivos */
+  overflow: auto;
+}
+
+.info-linea {
+  display: flex; /* Esto hará que los elementos hijos se muestren en línea */
+  align-items: center; /* Esto alineará los elementos hijos verticalmente en el centro */
+}
+.info-linea svg {
+  margin-right: 10px;
+}
+.info-contenedor {
+  display: flex;
+  justify-content: space-between; /* Esto distribuirá el espacio de manera uniforme entre las líneas de información */
+}
+
+.boton-tarjeta .elemento-desbordado {
+  position: absolute;
+  /* Ajusta las siguientes propiedades según sea necesario */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
