@@ -3,9 +3,6 @@
 .kitchen-card-container {
   display: flex;
   justify-content: space-between;
-  /* grid-template-columns: repeat(5, 1fr);  
-  grid-template-rows: repeat(2, 1fr);  */
-
   padding: 16px;
   /* height: max-content; */
   /* flex-wrap: wrap; */
@@ -58,17 +55,19 @@
   text-decoration: line-through;
 }
 
-.completar{
-  width: 200px;
-  border-radius: 6px;
-}
 .completar:hover{
-  background-color: #dbb52d;
+  background-color: rgb(192, 243, 162);
   width: 200px;
   border-radius: 6px;
 }
 
-.borrar{
-  width: 200px;
- border-radius: 6px   
+.borrar:hover{
+ width: 200px;
+ border-radius: 6px;   
+ background-color: rgb(243, 162, 162);
+}
+.kitchen-card .timer {
+  font-size:small;
+  color:black;
+  margin-top: 10px; /* Agrega un margen en la parte superior del temporizador */
 }
