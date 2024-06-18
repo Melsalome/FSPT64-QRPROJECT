@@ -57,6 +57,7 @@ const KitchenCard = ({ pedido }) => {
                         <input
                             type="checkbox"
                             name={item}
+                            className="miCheckbox"
                             checked={checkedItems[item] || false}
                             onChange={handleCheckChange}
                         />
