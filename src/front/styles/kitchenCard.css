@@ -63,7 +63,7 @@
 }
 
 .completar:hover{
-  background-color: rgb(192, 243, 162);
+  background-color: rgb(0, 187, 9);
   max-width:200px;
   border-radius: 6px;
 }
@@ -71,7 +71,7 @@
 .borrar:hover{
  width: 200px;
  border-radius: 6px;   
- background-color: rgb(243, 162, 162);
+ background-color: rgb(249, 25, 25);
 }
 .kitchen-card .timer {
   font-size:small;
@@ -103,7 +103,8 @@
 }
 .info-contenedor {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-evenly; 
+  align-items: center;
   max-height: auto;
   flex-direction: column;
   height: 100%;
@@ -118,7 +119,7 @@
   height: 100%;
 }
 .miCheckbox:checked + label:before {
-  background-color:  rgb(192, 243, 162);
+   background-color:rgb(0, 187, 9);
 }
 
 

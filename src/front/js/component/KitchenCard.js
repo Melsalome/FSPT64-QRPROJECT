@@ -5,31 +5,30 @@ import { MdOutlineTableRestaurant } from "react-icons/md";
 import { FaThumbtack } from "react-icons/fa6";
 import { LuTimer } from "react-icons/lu";
 
-const KitchenCard = ({ pedido, deleteOrder }) => {
+const KitchenCard = ({ pedido, deleteOrder, completeOrder }) => {
     const [time, setTime] = useState(0);
     const [color, setColor] = useState("black");
     const [checkedItems, setCheckedItems] = useState({});
-    const [message, setMessage] = useState(""); // Nuevo estado para el mensaje
+    const [message, setMessage] = useState("");
+    const [allChecked, setAllChecked] = useState(false);
+    const [comandaLista, setComandaLista] = useState(false);
 
-    const handleCheckChange = (event) => {
-        setCheckedItems({ ...checkedItems, [event.target.name]: event.target.checked });
+    // const handleCheckChange = (event) => {
+    //     setCheckedItems({ ...checkedItems, [event.target.name]: event.target.checked });
 
-        const allChecked = Object.values(checkedItems).every(item => item);
-        if (allChecked) {
-            setMessage('comanda lista!'); // Establece el mensaje cuando todos los elementos estén marcados
-        }
-    };
+    const todoCheck = Object.values(checkedItems).every(item => item);
+    if (todoCheck) {
+        setMessage('comanda lista!');
+    }
+
 
     const handleCompleteClick = () => {
-        // Verifica si todos los elementos están marcados
         const allChecked = Object.values(checkedItems).every(item => item);
 
         if (allChecked) {
-            // completeOrder(pedido.id);
             deleteOrder(pedido.id);
-            setMessage('comanda lista!'); // Establece el mensaje cuando se complete el pedido
+            setMessage('comanda lista!');
         } else {
-            // Si no todos los elementos están marcados, solo completa la orden
             completeOrder(pedido.id);
         }
     };
@@ -95,8 +94,8 @@ const KitchenCard = ({ pedido, deleteOrder }) => {
                         <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
                     </svg>
                 </button>}
-
-                {message && <div>{message}</div>}
+                {/* 
+                {message && <div>{message}</div>} */}
             </div>
         </div >
     );

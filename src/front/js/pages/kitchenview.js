@@ -99,7 +99,7 @@ const KitchenView = () => {
 
       {pedidos.map(pedido => (
         <div className="pedidos" key={pedido.id}>
-          <KitchenCard pedido={pedido} deleteOrder={deleteOrder(pedido.id)} />
+          <KitchenCard completeOrder={completeOrder} pedido={pedido} deleteOrder={() => deleteOrder(pedido.id)} />
 
         </div>
       ))}
