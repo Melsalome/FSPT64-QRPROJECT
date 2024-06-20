@@ -16,7 +16,6 @@ const KitchenCard = ({ pedido }) => {
         const allChecked = Object.values(checkedItems).every(item => item);
 
         if (allChecked) {
-            // Si todos los elementos están marcados, completa y elimina la orden
             completeOrder(pedido.id);
             deleteOrder(pedido.id);
         } else {

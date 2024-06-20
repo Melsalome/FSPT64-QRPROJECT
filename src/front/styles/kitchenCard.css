@@ -4,9 +4,8 @@
   display: flex;
   justify-content: space-between;
   padding: 16px;
-  /* height: max-content; */
-  /* flex-wrap: wrap; */
 }
+  
 
 .kitchen-card {
   background-color:#faebd7;
@@ -69,35 +68,49 @@
 .kitchen-card .timer {
   font-size:small;
   color:black;
-  margin-top: 10px; /* Agrega un margen en la parte superior del temporizador */
+  margin-top: 10px; 
 }
 .kitchen-card ul {
   list-style-type: none !important;
 }
 .boton-tarjeta {
-  width: 100%; /* Esto hará que el botón tenga el ancho completo de su contenedor */
-  box-sizing: border-box; /* Esto hará que el padding y el borde del botón se incluyan en su ancho total */
+  width: 100%; 
+  box-sizing: border-box; 
   position: relative;
-  white-space: nowrap; /* Esto evitará que el texto del botón se envuelva a la línea siguiente */
-  text-overflow: ellipsis; /* Esto hará que el texto que se desborde se recorte y se muestre con puntos suspensivos */
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
   overflow: auto;
+
+  /* border-radius: 6px;
+    height: 99%;
+    width: 32%;
+    border: 0 solid transparent;
+    background-color: rgb(0, 187, 9);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 0px;
+    text-shadow: none;
+    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+    outline-color: rgba(255, 255, 255, 0.5);
+    outline-offset: 0px;
+    z-index: 25; */
 }
 
 .info-linea {
-  display: flex; /* Esto hará que los elementos hijos se muestren en línea */
-  align-items: center; /* Esto alineará los elementos hijos verticalmente en el centro */
+  display: flex; 
+  align-items: center; 
 }
 .info-linea svg {
   margin-right: 10px;
 }
 .info-contenedor {
   display: flex;
-  justify-content: space-between; /* Esto distribuirá el espacio de manera uniforme entre las líneas de información */
+  justify-content: space-between; 
 }
 
 .boton-tarjeta .elemento-desbordado {
   position: absolute;
-  /* Ajusta las siguientes propiedades según sea necesario */
   top: 0;
   left: 0;
   width: 100%;
