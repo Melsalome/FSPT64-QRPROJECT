@@ -13,8 +13,9 @@ const KitchenCard = ({ pedido, deleteOrder, completeOrder }) => {
     const [allChecked, setAllChecked] = useState(false);
     const [comandaLista, setComandaLista] = useState(false);
 
-    // const handleCheckChange = (event) => {
-    //     setCheckedItems({ ...checkedItems, [event.target.name]: event.target.checked });
+    const handleCheckChange = (event) => {
+        setCheckedItems({ ...checkedItems, [event.target.name]: event.target.checked });
+    }
 
     const todoCheck = Object.values(checkedItems).every(item => item);
     if (todoCheck) {
