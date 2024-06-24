@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/dashboard.css";
 import mesasImage from '../../img/mesas.png';
 import menu from "../../img/menu.png";
@@ -7,9 +8,15 @@ import factura from "../../img/factura.png";
 import ajustes from "../../img/ajustes.png";
 import pantone from "../../img/pantone.png";
 import cajero from "../../img/cajero.png";
-
+import { Context } from "../store/appContext";
 const Dashboard = () => {
-    
+    const { actions } = useContext(Context);
+    const navigate = useNavigate()
+    const redirectToLogin = () => {
+        actions.handleLogOut();
+        // logOut()
+        navigate("/app/login")
+    }
     return (
         <>
             <section>
@@ -24,7 +31,7 @@ const Dashboard = () => {
                         </div>
                         <div className="icono">
                             <Link to="../app/caja">
-                            <img src={cajero} alt="Caja" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
+                                <img src={cajero} alt="Caja" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
                             </Link>
                             <p>Caja</p>
                         </div>
@@ -47,13 +54,10 @@ const Dashboard = () => {
                             <p>Facturación</p>
                         </div>
                     </div>
+                    <button className="containerHome" onClick={() => redirectToLogin()}>Log out</button>
                 </div>
             </section>
         </>
     );
 };
-
 export default Dashboard;
-
-
-

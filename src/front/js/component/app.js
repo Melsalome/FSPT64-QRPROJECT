@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -7,23 +6,16 @@ import {
   useNavigate,
   Routes,
 } from "react-router-dom";
-
-
 // import Menu from "./menu";
-
-
-
+import { Menu } from "../pages/menu";
 import { Navigate } from "react-router-dom";
-
 const App = () => {
   const Navigate = useNavigate();
   const [menuData, setMenuData] = useState(null);
-
   const handleScanSuccess = (decodedText) => {
     setMenuData(decodedText);
     Navigate("/app/signup");
   };
-
   return (
     <div>
       <Routes>
@@ -42,11 +34,9 @@ const App = () => {
     </div>
   );
 };
-
 const AppWithRouter = () => (
   <Router>
     <App />
   </Router>
 );
-
 export default AppWithRouter;
