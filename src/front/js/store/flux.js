@@ -344,6 +344,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             setStore({ ...store, invoices: [...store.invoices, data] });
         },
+        addOrder: (newOrder) => {
+            const store = getStore();
+            setStore({ orders: [...store.orders, newOrder] });
+        },
 	},
 
             createNewTable: async(table_number) => {
