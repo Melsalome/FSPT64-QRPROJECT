@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate, Outlet } from "react-router-dom"
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
+import { jwtDecode } from "jwt-decode";
 
 
 const Login = () => {
@@ -30,12 +31,33 @@ const Login = () => {
 			alert("La contraseña debe tener entre 8 y 12 caracteres.");
 		} else {
 			await actions.getTokenLogin(email, password);
+			const token = store.token
+			console.log(store.token)
 			// Check token after login attempt
-			const localStoraged = localStorage.getItem("token")
-			if (localStoraged) {
-				navigate("/app/home");
+			
+			const decodedToken = jwtDecode(token);
+			const localStoraged = localStorage.getItem(token)
+
+			switch(decodedToken.roles){
+				case "admin" : 
+				navigate("/app/dashboard");
 				setToken(localStoraged)
-			} 
+				break
+				case "cocina": 
+				navigate("/app/kitchenview");
+				setToken(localStoraged)
+				break
+				case "Restaurante": 
+				navigate("/app/caja");
+				setToken(localStoraged)
+				break
+				case "mesa1": 
+				navigate("/app/restaurants/1/tables/1/menu");
+				setToken(localStoraged)
+				break
+
+			}      
+				
 		}
 	};
 

@@ -116,7 +116,7 @@ def serve_any_other_file(path):
     
 #     return send_file(buffer, mimetype='image/png', as_attachment=True, download_name=f"qr_restaurant_{restaurant_id}_table_{table_id}.png")
 def generate_qr_code(restaurant_id, table_id):
-    url = f"https://humble-pancake-977xqppgr6q427j55-3001.app.github.dev/api/restaurants/{restaurant_id}/tables/{table_id}/menu"
+    url = f"${process.env.BACKEND_URL}/app/restaurants/{restaurant_id}/tables/{table_id}/menu"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -132,7 +132,8 @@ def generate_qr_code(restaurant_id, table_id):
 
 @app.route('/api/restaurants/<int:restaurant_id>/tables/<int:table_id>/generate_qr', methods=['GET'])
 def generate_qr(restaurant_id, table_id):
-    url = f"https://humble-pancake-977xqppgr6q427j55-3000.app.github.dev/restaurants/{restaurant_id}/tables/{table_id}/menu"
+  # cambiar url   
+    url = f"https://humble-pancake-977xqppgr6q427j55-3000.app.github.dev/app/restaurants/{restaurant_id}/tables/{table_id}/menu"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,

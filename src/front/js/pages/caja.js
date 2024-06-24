@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/caja.css";
 import mesasImage from '../../img/mesas.png';
@@ -15,6 +15,9 @@ import iconoAnadir from "../../img/anadir.png";
 import iconoEliminar from "../../img/eliminar.png";
 import iconoDash from "../../img/dash.png";
 import suelo from "../../img/suelo506.png";
+import { Context } from "../store/appContext";
+import mesagreen from "../../img/mesagreen.png"
+
 
 
 const Caja = () => {
@@ -23,7 +26,9 @@ const Caja = () => {
     const [mesas, setMesas] = useState([]);
     const [angulosRotacion, setAngulosRotacion] = useState({});
     const [mostrarCarta, setMostrarCarta] = useState(false);
-    
+    const {store, actions} = useContext(Context)
+    // const [activeSession, setActiveSession] = useState({"id_table":1, "products": [{"product_name":""}]})
+    const[activeSession, setActiveSession] = useState({ id_table: 1, products: [] })
     const recuperarEstado = () => {
         const largo = JSON.parse(localStorage.getItem('largoSala')) || '600px';
         const ancho = JSON.parse(localStorage.getItem('anchoSala')) || '600px';
@@ -31,7 +36,7 @@ const Caja = () => {
         const angulosGuardados = JSON.parse(localStorage.getItem('angulosRotacion')) || {};
 
 
-        console.log(mesas, angulosRotacion, largo, ancho);
+        // console.log(mesas, angulosRotacion, largo, ancho);
         setLargoSala(largo);
         setAnchoSala(ancho);
         setMesas(mesasGuardadas);
@@ -67,7 +72,15 @@ const Caja = () => {
         aplicarMedidas();
     }, [largoSala, anchoSala]);
 
+    const handleActiveSession = async(table_number) => {
+       const data = await actions.getActiveSessionTable(table_number)
+    //    console.log(data)
+      setActiveSession(data)
+    }
     
+    useEffect( () => {
+        // console.log(activeSession)
+    }, [activeSession])
 
     return (
         <>
@@ -78,7 +91,32 @@ const Caja = () => {
                         <button className="boton-atras" onClick={manejarClickAtras}><img src={iconoAtras} alt="Atrás" style={{ width: '20px', height: '20px' }} /> Atrás</button>
 
                     </div>
-                    <div className="ticket"></div>
+                    <div className="ticket">
+                        <div className="ticket_table">
+                            {
+                                <div>
+                                    <h2>Numero de Mesa: {activeSession.table_number}</h2>
+                                    <h2>Productos:</h2>
+                                    <ul>
+                                    {/* {activeSession.products.map( (product) => {
+                                       
+                                       return <li>{product.product_name} x {product.quantity}</li> 
+                                        // console.log(product.product_name)
+                                    })} */}
+                                      {activeSession.products && activeSession.products.length > 0 ? (
+                                        activeSession.products.map((product, index) => (
+                                            <li key={index}>{product.product_name} x {product.quantity}</li>
+                                        ))
+                                    ) : (
+                                        <li>No hay productos</li>
+                                    )}
+                                    </ul>
+                                   
+                                    <h2></h2>
+                                </div>
+                            }
+                        </div>
+                    </div>
                     <div className="botones">
                         <button className="boton-abrir-caja">Abrir caja<img src={iconoLlave} alt="Atrás" style={{ width: '35px', height: '35px' }} /> </button>
 
@@ -92,7 +130,8 @@ const Caja = () => {
                 </div>
                 {!mostrarCarta ? (
                 <div className="container-caja-mesas" style={{ backgroundImage: `url(${suelo})`, backgroundSize: '110px', backgroundPosition: 'center' }}>
-                    {mesas.map((mesa) => (
+                   { console.log(mesas[8],"hola")}
+                    {mesas.map((mesa) => ( 
                         <div
                             key={mesa.id}
                             style={{
@@ -102,9 +141,9 @@ const Caja = () => {
                                 top: `${mesa.posicion.y}px`,
                             }}
                             className="mesa-container"
-                        >
+                        onClick={() => handleActiveSession(mesa.id)}>
                             <img
-                                src={mesa.icono}
+                                src={activeSession.status === 'active' && mesa.table_number == activeSession.table_number ? mesagreen : mesa.icono}
                                 alt="Mesa"
                                 style={{
                                     width: '60px',
@@ -113,7 +152,7 @@ const Caja = () => {
                                     transition: 'transform 0.3s ease-in-out'
                                 }}
                             />
-                            <div className="numeroMesa">{mesa.nombre}</div>
+                            <div className="numeroMesa">{mesa.table_number}</div>
                         </div>
 
                     ))}

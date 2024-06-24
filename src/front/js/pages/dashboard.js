@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "../../styles/dashboard.css";
 import mesasImage from '../../img/mesas.png';
 import menu from "../../img/menu.png";
@@ -36,7 +37,9 @@ const Dashboard = () => {
                             <p>Caja</p>
                         </div>
                         <div className="icono">
-                            <img src={menu} alt="Carta" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
+                            <Link to="../app/adminmenu">
+                                <img src={menu} alt="Carta" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
+                            </Link>
                             <p>Carta</p>
                         </div>
                     </div>
@@ -46,7 +49,9 @@ const Dashboard = () => {
                             <p>Configuración</p>
                         </div>
                         <div className="icono">
-                            <img src={pantone} alt="Estilos" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
+                            <Link to="../restaurants/1/tables/1/menu">
+                                <img src={pantone} alt="Estilos" style={{ cursor: 'pointer', width: '100px', height: '100px' }} />
+                            </Link>
                             <p>Estilos</p>
                         </div>
                         <div className="icono">
@@ -56,7 +61,11 @@ const Dashboard = () => {
                     </div>
                     <button className="containerHome" onClick={() => redirectToLogin()}>Log out</button>
                 </div>
+                <button className="containerHome" onClick={() => actions.handleLogOut()}>Log out</button>
             </section>
+
+
+
         </>
     );
 };

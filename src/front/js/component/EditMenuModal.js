@@ -9,13 +9,57 @@ const EditMenuModal = ({productId, setProductId}) => {
 const [updatedFormData, setUpdatedFormData] = useState([])
 const categoryName = ["Starters", "Mains", "Desserts", "Drinks"];
 const [isUpdated, setIsUpdated] = useState(false)
+const [imageFile, setImageFile] = useState(null);
+const [newProductData, setNewProductData] = useState({});
+
+const handleFileChange = (event) => {
+  setImageFile(event.target.files[0]);
+};
+
+const handleUpload = async () => {
+  if (!imageFile) {
+    console.error('No file selected');
+    return null;
+  }
+
+  const formData = new FormData();
+  formData.append('file', imageFile);
+  formData.append('upload_preset', 'qrproject'); 
+
+  try {
+    const response = await fetch('https://api.cloudinary.com/v1_1/dmcqru5na/image/upload', { 
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error(`Cloudinary upload failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    return null;
+  }
+};
+
+
+
 
 const onSave = async(updatedFormData) => {
-await actions.uptadeProductById(productId, updatedFormData.name, updatedFormData.price, updatedFormData.description, updatedFormData.image, updatedFormData.category)
+  let imageUrl = newProductData.image;
+
+    if (imageFile) {
+      imageUrl = await handleUpload();
+      newProductData.image = imageUrl; 
+    }
+
+await actions.updateProductById(productId, updatedFormData.name, updatedFormData.price, updatedFormData.description, imageUrl, updatedFormData.category)
 
   setIsUpdated(true)
   setProductId(""),
-  setIsUpdated(false)   // Ocultar mensaje después de 3 segundos
+  setIsUpdated(false)  
   
 }
 
@@ -44,15 +88,7 @@ const handleChange = (event) => {
 useEffect( () => {
     fetchProductById(productId)
 },[productId])
-// useEffect(() => {
-//   let isMounted = true;
-//   if (productId && isMounted) {
-//       fetchProductById(productId);
-//   }
-//   return () => {
-//       isMounted = false;
-//   };
-// }, [productId]);
+
   return (
     
     <div>
@@ -73,14 +109,15 @@ useEffect( () => {
             <textarea name="description" value={updatedFormData.description} onChange={handleChange}></textarea>
           </label>
           <label>
-            Category:
-            <select className="category-dropdown" name="category" onChange={handleChange} >
-                {categoryName.map((name, index) => (<option key={index} value={name} >{name}</option>))} </select>
-          </label>
+              Category:
+              <select className="category-dropdown" name="category" onChange={handleChange}>
+                <option value="Select category">Select category</option>
+                  {categoryName.map((name, index) => (<option key={index} value={newProductData.category} >{name}</option>))} </select>
+            </label>
           <label>
-            Image URL:
-            <input type="text" name="image" value={updatedFormData.image} onChange={handleChange}/>
-          </label>
+                Upload Image:
+                <input type="file" onChange={handleFileChange} />
+              </label>
           <button type="submit">Save</button>
           <button type="button" onClick={() => {setProductId("")}}>Cancel</button>
         </form>

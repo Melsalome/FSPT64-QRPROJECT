@@ -1,17 +1,19 @@
-body {
+/* body {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
     background-color: rgb(58, 53, 53);
 }
-
-
+ */
+.containermenuview{
+    background-color: rgb(58, 53, 53);
+    height: 100vh;
+}
 
 .menu-container {
     margin-left: 40px;
     margin-right: 40px;
-    margin-top: 25px;
     padding: 20px;
 }
 

@@ -12,6 +12,12 @@ import { dispatcherOrder } from "./dispatcherOrder";
 
 import signupDispatcher from "./dispatcherSignup";
 
+import { dispatcherInvoice } from "./dispatcherInvoice";
+
+
+import dispatcherTable from "./dispatcherTable";
+import sesionsDispatcher from "./dispatcherSesions";
+
 
 const getState = ({ getStore, getActions, setStore }) => {
     return {
@@ -23,7 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             cart: [],
             restaurant: [],
             totalAmount: 0,
-            orders: []
+            orders: [],
+            invoices: []
         },
         actions: {
 
@@ -50,19 +57,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...store, token: null })
             },
 
-            getUserRegister: async (restaurantName, firstName, LastName, email, password) => {
-                const data = await signupDispatcher(restaurantName, firstName, LastName, email, password);
-                console.log(data)
-                return data;
-
-            },
-
-            getMenu: (restaurantId, tableId) => {
+            getMenu: () => {
                 const store = getStore()
-                fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/menu`)
+                fetch(`http://127.0.0.1:5000/app/products`)
                     .then(response => response.json())
                     .then(data => {
                         setStore({ ...store, menu: data });
+
                     })
                     .catch(error => console.error('Error fetching menu:', error));
             },
@@ -84,7 +85,38 @@ const getState = ({ getStore, getActions, setStore }) => {
                 };
 
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/orders`, {
+                    const responseSession = await fetch(`http://127.0.0.1:5000/app/sessions/${tableId}/products`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            CORS: 'Access-Control-Allow-Origin',
+                            body: JSON.stringify(orderData)
+                        });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to create session');
+                    }
+
+                    const result = await response.json();
+                    setStore({ ...store, orders: [...store.orders, result] });
+                    console.log('Order created successfully2:', result);
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert('Error creating order. Please try again.');
+                }
+
+
+                //                     const result = await response.json();
+                //                     console.log('Order created successfully:', result);
+                //                     setStore({ ...store, orders: [...store.orders, result]});
+                //                     return result;
+
+                //                 } catch (error) {
+
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/orders`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -100,11 +132,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const result = await response.json();
                     setStore({ ...store, orders: [...store.orders, result] });
                     console.log('Order created successfully:', result);
-                } catch (error) {
+                }
+                catch (error) {
+
                     console.error('Error:', error);
                     // alert('Error creating order. Please try again.');
                 }
             },
+
 
             getOrder: async (restaurantId) => {
                 const data = await dispatcherOrder.get(restaurantId);
@@ -253,7 +288,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return data;
             },
 
-            uptadeProductById: async (id, name, price, description, image, category) => {
+            updateProductById: async (id, name, price, description, image, category) => {
                 const data = await productDispatcher.put(id, name, price, description, image, category)
                 return data;
             },
@@ -266,11 +301,87 @@ const getState = ({ getStore, getActions, setStore }) => {
             deleteProduct: async (id) => {
                 const data = await deleteProductDispatcher(id);
                 return data;
+            },
 
+
+        },
+
+
+        createInvoice: async (restaurantId, tableId, orderId) => {
+            const store = getStore()
+            const invoiceData = {
+                order_id: orderId
+            };
+
+            try {
+                const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/invoices`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    CORS: 'Access-Control-Allow-Origin',
+                    body: JSON.stringify(invoiceData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create invoice');
+                }
+
+                const result = await response.json();
+                setStore({ ...store, invoices: [...store.invoices, result] });
+                console.log('Invoice created successfully:', result);
+            } catch (error) {
+                console.error('Error:', error);
+                // alert('Error creating order. Please try again.');
             }
+        },
+        getInvoice: async (restaurantId, tableId, invoiceId) => {
+            const data = await dispatcherInvoice.get(restaurantId, tableId, invoiceId);
+            const store = getStore();
+            setStore({ ...store, invoices: [...store.invoices, data] });
+        },
 
+        createNewTable: async (table_number) => {
+            const data = await dispatcherTable.create_table(table_number);
+            return data;
+        },
+
+        delete_table: async (table_number) => {
+            const data = await dispatcherTable.delete_table(table_number)
+            return data;
+        },
+        createClient: async (name) => {
+            const data = await sesionsDispatcher.create_client(name);
+            return data;
+        },
+        assingClient: async (idTable, idClient) => {
+            const data = await sesionsDispatcher.assing_client(idTable, idClient);
+            console.log(data);
+
+            return data;
+        },
+        getSessions: async () => {
+            const data = await sesionsDispatcher.get();
+            return data;
+        },
+        addProductToTable: async (tableId, items) => {
+            const data = await sesionsDispatcher.add_product_to_session(
+                tableId,
+                items
+            );
+            console.log("dato en flux addProductToTable: ", data);
+            return data;
+        },
+
+        getActiveSessionTable: async (table_number) => {
+            const data = await sesionsDispatcher.get_session_active(table_number);
+            console.log("dato en flux getActiveSessionTable", data);
+            return data;
         }
-    };
-};
+    }
+}
+
+
+
 
 export default getState;

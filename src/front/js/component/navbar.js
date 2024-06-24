@@ -56,7 +56,7 @@ export const Navbar = ({onClose}) => {
 										</li>
 										<li className="dropdown-item cart-actions">
 											<button className="butt-close" onClick={onClose}>Close</button>
-											<Link to = {`/app/restaurants/${restaurantId}/tables/${tableId}/order-summary`}>
+											<Link to = {`/restaurants/${restaurantId}/tables/${tableId}/order-summary`}>
 												<button className="butt-order">Order</button>
 											</Link>
 										</li>
