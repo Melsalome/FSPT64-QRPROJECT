@@ -1,8 +1,4 @@
-
-import { IoRestaurantSharp } from "react-icons/io5";
-
 import deleteProductDispatcher from "./dispatcherDeleteProduct";
-
 import loginDispatcher from "./dispatcherLogin";
 
 import newProductDispatcher from "./dispatcherNewProduct";
@@ -12,6 +8,7 @@ import { dispatcherOrder } from "./dispatcherOrder";
 
 
 import signupDispatcher from "./dispatcherSignup";
+// import newTableDispatcher from "./dispatcherTable";
 
 
 const getState = ({ getStore, getActions, setStore }) => {
@@ -22,7 +19,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			register: null,
 			menu: [],
             cart: [],
-            restaurant: [],
             totalAmount: 0,
             orders: []
 		},
@@ -58,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getMenu: (restaurantId,tableId) => {
                 const store = getStore()
-                fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/menu`)
+                fetch(`http://127.0.0.1:5000/app/products`)
                     .then(response => response.json())
                     .then(data => {
                         setStore({ ...store, menu: data });
@@ -83,7 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 };
         
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/orders`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/orders`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -108,20 +104,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             getOrder: async (restaurantId) => {
                 const data = await dispatcherOrder.get(restaurantId);
 				const store = getStore();
-                const ordersWithTimestamp = store.orders.map(order => ({
-                    ...order,
-                    timestamp: new Date().toISOString() 
-                  }));
-            
-                setStore({ orders: ordersWithTimestamp });
 				setStore({ ...store,orders: data}); 
 				console.log(data);
             },
 
-
             updateOrder: async (restaurantId, tableId, orderId, updatedOrderData) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/orders/${orderId}`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/orders/${orderId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -147,7 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             deleteOrder: async (restaurantId, tableId, orderId) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/orders/${orderId}`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/orders/${orderId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -168,12 +157,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     // alert('Error deleting order. Please try again.');
                 }
             },
-
-            removeOrderFromList: (orderId) => {
-				const store = getStore();
-				const updatedOrders = store.orders.filter(order => order.id !== orderId);
-				setStore({ ...store, orders: updatedOrders });
-			},
        
             addToCart: (meal, quantity = 1) => {
                 const store = getStore()
@@ -227,49 +210,42 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...store, cart: [], totalAmount: 0 });
             },
 
-
-            getRestaurant: (restaurantId) => {
-                const store = getStore()
-                fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        setStore({ ...store, restaurant: data });
-                    })
-                    .catch(error => console.error('Error fetching menu:', error));
-
             getProduct: async() => {
               const data = await productDispatcher.get();
             //   console.log(data)
                 // const store = getStore();
                 // setStore({...store, data})
             return data
-            };
+            }, 
 
             getProductById: async (id) => {
                 const data = await productDispatcher.getById(id)
                 // console.log(data)
                 return data;
-            };
+            },
 
-            uptadeProductById: async(id, name, price, description, image, category) => {
+            updateProductById: async(id, name, price, description, image, category) => {
                 const data = await productDispatcher.put(id, name, price, description, image, category)
                 return data;
-            };
+            },
 
             createNewProduct: async (name, price, description, image, category) => {
                 const data = await newProductDispatcher(name, price, description, image, category)
                 return data;
-            };
+            },
 
             deleteProduct: async(id) => {
                 const data = await deleteProductDispatcher(id);
                 return data;
+            },
 
-            }
+            // createNewTable: async(table_number) => {
+            //     const data = await newTableDispatcher(table_number);
+            //     return data;
+            // }
 		
 		}
-	},
+	};
 };
-}
 
 export default getState;

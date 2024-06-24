@@ -21,18 +21,22 @@ section{
     background-size: cover;
 }
 
-.container-dashboard{
+.container-qr{
     background: rgba(255, 255, 255, 0.4);
     position: relative;
     width: 600px;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, .6);
     border-radius: 20px;
-    height: 600px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-
-.container-dashboard h1{
+.container-qr h1{
+    padding-top: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,47 +47,62 @@ section{
     font-weight: bold;
 }
 
-.iconos-dashboard {
-    position: relative;
-    max-height: 38.3%;
-    font-weight: bold;
-    color: #000000;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 20px;
-}
-
-.icono {
-    flex: 1 1 40%;
+.forms-qr{
+    /* border: 1px solid #000; */
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
+    width: 600px;
+    /* height: 100%; */
 }
 
-.containerHome{
+.form-id-restaurant, .form-id-table{
+    font-weight: bold;
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.container-qr form{
+    padding-top: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.buttons-qr{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 7%;
-    border-radius: 6px 6px 18px 18px;
 }
 
-.containerHome:hover{
-    background: rgb(255, 89, 89);
-    backdrop-filter: blur(15px);
+.dash-button{
+    background: rgb(253, 117, 117);
+    width: 25%;
+    border-radius: 6px 6px 18px 6px;
+    margin-left: 2px;
+}
+
+.dash-button:hover {
+    background: rgb(255, 42, 42);
     
 }
 
-pre {
-    padding-top: 7.5%;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
-    color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    height: 100%;
-    font-weight: bold;
+.generate-button{
+    border-radius: 6px 6px 6px 18px;
+}
+.generate-button:hover{
+    background: rgb(119, 119, 119);
+    color: #fff;
 }

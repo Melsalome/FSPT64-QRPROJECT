@@ -1,14 +1,15 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
-    background-color: rgb(58, 53, 53);
+    background: url(https://img.freepik.com/free-photo/happy-waiter-holding-plates-with-food-looking-camera-while-serving-guests-restaurant_637285-1707.jpg?t=st=1717841689~exp=1717845289~hmac=7ed9b0e68289f0cc453f21f8f4d9997e65fb41889eb7c741e926c116d32fb059&w=900) no-repeat;
+    background-position: left 0px bottom 50%;
+    background-size: 101.2%;
+    background-attachment: fixed;
 }
 
-
-
 .menu-container {
+    background: transparent;
     margin-left: 40px;
     margin-right: 40px;
     margin-top: 25px;
@@ -19,30 +20,42 @@ body {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    flex-direction: row;
+    /* flex-direction: row; */
     justify-content: space-between;
+
+    width: 100%;
 }
-.createproduct{
-    height: 40px;
-    width: 200px;
-}
+
 .menu-header h1 {
-    font-size: 24px;
-    color: #faf6f6;
+    padding-left: 10px;
+    font-size: 30px;
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 .menu-categories {
+    /* border: 1px solid lightgrey; */
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-top: 30px;
     display: flex;
-    gap: 10px;
+    gap: 1%;
     margin-bottom: 20px;
-    width: 50rem;
+    width: 100%;
+
 }
 
 .menu-categories .category {
-    padding: 10px 20px;
-    margin: 5px;
+
+    /* padding: 10px 20px; */
+    /* margin: 5px; */
+    /* margin-right: 50px; */
+    width: 15%;
     cursor: pointer;
+    border-radius: 6px 6px 18px 18px;
+    border: 1px solid lightgrey;
 }
 
 .menu-categories .category:hover {
@@ -61,11 +74,11 @@ body {
     gap: 20px;
 }
 
-  
+
 .menu-item {
-    background-color: #fff;
+    background: rgba(255, 255, 255, 0.70);
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: center;
     transition: transform 0.3s;
@@ -74,11 +87,15 @@ body {
     justify-content: space-between;
     position: relative;
     overflow: hidden;
+    height: 22em;
+    border: 1px solid #e4b09e;
+    backdrop-filter: blur(15px);
 
 }
 
 .menu-item:hover {
     transform: scale(1.05);
+    border: 2px solid #ed4e14;
 }
 
 .menu-item img {
@@ -91,7 +108,8 @@ body {
 .menu-item h3 {
     font-size: 18px;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+    height: 8%;
 }
 
 .menu-item p {
@@ -104,44 +122,50 @@ body {
     transition: white-space 0.5s ease;
 }
 
-  
+
 .description {
-    max-height: 3em; 
+    max-height: 3em;
     overflow: hidden;
     position: relative;
     transition: max-height 0.5s ease;
 }
 
-  
+
 .menu-item:hover .description p {
     white-space: normal;
 }
-  
+
 .menu-item:hover .description {
-    max-height: 100em; 
+    max-height: 100em;
 }
 
 .menu-item {
-  flex: 1 1 auto; 
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  margin: 10px; 
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    margin: 10px;
 }
 
-.menu-item:hover {
-  transform: scale(1.05); 
-  z-index: 1; 
+.menu-item:hover img {
+    /* transform: scale(0.5);  */
+    z-index: 1;
 }
 
 .description {
-  max-height: 3em; 
-  overflow: hidden;
-  transition: max-height 0.5s ease;
+    /* max-height: 3em;  */
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.menu-item:hover .figuremenu-item {
+    max-height: 8em;
+    transition: 0.3s;
+    margin-bottom: 0;
 }
 
 .menu-item:hover .description {
-  max-height: 100em; 
+    /* max-height: 100em;  */
 }
 
 .menu-item .price {
@@ -150,36 +174,76 @@ body {
     font-weight: bold;
 }
 
-.material-symbols-outlined{
+.material-symbols-outlined {
     border: 1px solid black;
     border-color: gray;
     font-size: 30px;
     border-radius: 10px;
-   
+
 }
 
-.figuremenu-item{
+.figuremenu-item {
     height: 150px;
 }
 
-.editButton{
+.editButton {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-.editButton button{
+.editButton button {
     width: 45px;
 }
 
-.update-message{
+.update-message {
     margin-top: 10px;
-    color:#ed4e14;
+    color: #ed4e14;
     font-weight: bold;
 }
+
+.menu-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    padding-right: 5px;
+}
+
+.menu-buttons button {
+    font-size: 19px;
+    margin: 4px;
+}
+
+.dash {
+    border: 1px solid rgb(255, 255, 255);
+    width: 20%;
+    background: rgb(253, 117, 117);
+    border-radius: 18px 18px 6px 6px;
+    min-width: 200px;
+}
+
+.createproduct {
+    border: 1px solid rgb(255, 255, 255);
+    width: 20%;
+    background: rgb(134, 206, 134);
+    border-radius: 18px 18px 6px 6px;
+    min-width: 200px;
+}
+
+.dash:hover {
+    background: rgb(255, 42, 42);
+}
+
+.createproduct:hover {
+    background: rgb(60, 194, 60);
+}
+
+
 @MEDIA (MAX-WIDTH: 400PX) {
-    
-    .menu-container{
+
+    .menu-container {
         margin-left: 0;
     }
-    }
+}

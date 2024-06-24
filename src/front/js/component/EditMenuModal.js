@@ -11,7 +11,7 @@ const categoryName = ["Starters", "Mains", "Desserts", "Drinks"];
 const [isUpdated, setIsUpdated] = useState(false)
 
 const onSave = async(updatedFormData) => {
-await actions.uptadeProductById(productId, updatedFormData.name, updatedFormData.price, updatedFormData.description, updatedFormData.image, updatedFormData.category)
+await actions.updateProductById(productId, updatedFormData.name, updatedFormData.price, updatedFormData.description, updatedFormData.image, updatedFormData.category)
 
   setIsUpdated(true)
   setProductId(""),
