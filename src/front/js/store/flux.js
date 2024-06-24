@@ -12,8 +12,13 @@ import { dispatcherOrder } from "./dispatcherOrder";
 
 
 import signupDispatcher from "./dispatcherSignup";
+
+import { dispatcherInvoice } from "./dispatcherInvoice";
+
+
 import dispatcherTable from "./dispatcherTable";
 import sesionsDispatcher from "./dispatcherSesions";
+
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -25,7 +30,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             cart: [],
             restaurant: [],
             totalAmount: 0,
-            orders: []
+            orders: [],
+            invoices: []
 		},
 		actions: {
 		
@@ -106,6 +112,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                         console.error('Error:', error);
                         // alert('Error creating order. Please try again.');
                     }
+
+        
+//                     const result = await response.json();
+//                     console.log('Order created successfully:', result);
+//                     setStore({ ...store, orders: [...store.orders, result]});
+//                     return result;
+                    
+//                 } catch (error) {
+
                 try {const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/orders`, {
                     method: 'POST',
                     headers: {
@@ -124,10 +139,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                 console.log('Order created successfully:', result);
             }
                      catch (error) {
+
                     console.error('Error:', error);
                     // alert('Error creating order. Please try again.');
                 }
             },
+
 
             getOrder: async (restaurantId) => {
                 const data = await dispatcherOrder.get(restaurantId);
@@ -290,6 +307,45 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return data;
             },
 
+
+            }
+		
+		},
+        createInvoice: async(restaurantId,tableId,orderId) => {
+            const store = getStore()
+            const invoiceData = {
+                order_id: orderId
+            };
+    
+            try {
+                const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/invoices`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    CORS:'Access-Control-Allow-Origin',
+                    body: JSON.stringify(invoiceData)
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Failed to create invoice');
+                }
+    
+                const result = await response.json();
+                setStore({ ...store, invoices: [...store.invoices, result] });
+                console.log('Invoice created successfully:', result);
+            } catch (error) {
+                console.error('Error:', error);
+                // alert('Error creating order. Please try again.');
+            }
+        },
+        getInvoice: async (restaurantId,tableId,invoiceId) => {
+            const data = await dispatcherInvoice.get(restaurantId,tableId,invoiceId);
+            const store = getStore();
+            setStore({ ...store, invoices: [...store.invoices, data] });
+        },
+	},
+
             createNewTable: async(table_number) => {
                 const data = await dispatcherTable.create_table(table_number);
                 return data;
@@ -329,6 +385,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               }
 		}
 	}
+
 };
 
 

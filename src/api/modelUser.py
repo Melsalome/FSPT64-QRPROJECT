@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -106,6 +107,7 @@ class Order(db.Model):
     payment_method = db.Column(db.String(50), nullable=False)
     total_price = db.Column(db.Float, nullable=False)
     order_items = db.relationship('OrderItem', backref='order', lazy=True)
+    invoice = db.relationship('Invoice', back_populates='order', uselist=False)
     
     def __repr__(self):
         return f'<Order {self.id}>'
@@ -144,3 +146,18 @@ class OrderItem(db.Model):
           
         }
 
+class Invoice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
+    table_id = db.Column(db.Integer, db.ForeignKey('table.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    order = db.relationship('Order', back_populates='invoice')
+    def to_dict(self):
+      
+        return {
+            'id': self.id,
+            'table_id': self.table.id,
+            'restaurant_id': self.restaurant.id,
+            'total_price': self.total_price,
+        }

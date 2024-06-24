@@ -32,7 +32,11 @@ import Caja from "./pages/caja";
 import App from "./component/app";
 import AdminMenuView from './pages/adminMenuView';
 import EditMenuModal from "./component/EditMenuModal";
+
+import { Invoice } from "./pages/Invoice";
+
 import Navbarglobal from "./component/navbarglobal";
+
 
 
 
@@ -79,8 +83,11 @@ const Layout = () => {
                         <Route element={<AboutUs />} path="/about-us" />
 
 
-                        <Route element={<GenerateQR />} path="/generate-qr" />
-                        <Route element={<KitchenList />} path="/restaurants/:restaurantId/orders"  />
+
+                        <Route element={<GenerateQR />} path="app/generate-qr" />
+                        <Route element={<KitchenList />} path="app/restaurants/:restaurantId/orders"  />
+                        <Route element={<Invoice />} path="app/restaurants/:restaurantId/tables/:tableId/invoices/:invoiceId"  />
+
 
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>

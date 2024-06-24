@@ -23,45 +23,94 @@ export const OrderSummary = () => {
     setComment(e.target.value);
   };
 
-  const handlePaymentMethodChange = (method) => {
-    setPaymentMethod(method);
-  };
-  const handleFinishOrder = () => {
-    if (!paymentMethod) {
-      alert("Please choose your payment method!");
-      return;
-    }
-    actions.addProductToTable(tableId, store.cart);
-    actions.createOrder(
-      restaurantId,
-      tableId,
-      comment,
-      paymentMethod,
-      totalPrice
-    );
-    actions.clearCart();
-    navigate(`/restaurants/${restaurantId}/tables/${tableId}/order-success`);
-  };
-  console.log("store.cart: ", store.cart);
 
-  return (
-    <>
-      <Navbar />
-      <div className="order-summary">
-        <h2>Order Summary</h2>
-        <ul>
-          {store.cart.map((meal, index) => (
-            <li key={index}>
-              <div>{meal.name}</div>
-              <div>x {meal.quantity}</div>
-              <div className="butt">
-                {meal.quantity === 1 ? (
-                  <>
-                    <button
-                      className="trash-icon"
-                      onClick={() => actions.removeItem(meal.id)}
-                    >
-                      <i className="fa-solid fa-trash fa-xs"></i>
+    const handlePaymentMethodChange = (method) => {
+        setPaymentMethod(method);
+    };
+    const handleFinishOrder = async() => {
+        if (!paymentMethod) {
+            alert('Please choose your payment method!');
+            return;
+        }
+
+        try {
+            const orderResult = await actions.createOrder(restaurantId, tableId, comment, paymentMethod, totalPrice);
+        // console.log('Order result:', orderResult);
+        if (orderResult && orderResult.id) {
+            const orderId = orderResult.id;
+            console.log('Order ID:', orderId);
+            const invoiceResult = await actions.createInvoice(restaurantId, tableId, orderId);
+            actions.clearCart();
+            navigate(`/app/restaurants/${restaurantId}/tables/${tableId}/order-success`);
+        } else {
+            throw new Error('Order result is undefined or missing the order ID');
+        }
+        } catch (error) {
+            console.error('Error finishing order:', error);
+            alert('Error finishing order. Please try again.');
+        }
+     
+              
+                
+            }
+     
+    
+    return (
+        <>
+            <Navbar />
+            <div className="order-summary">
+                <h2>Order Summary</h2>
+                <ul>
+                    {store.cart.map((meal, index) => (
+                        <li key={index}>
+                            <div>{meal.name}</div>
+                            <div>x {meal.quantity}</div>
+                            <div className="butt">
+                            {meal.quantity === 1 ? (
+                <>
+                    <button className='trash-icon' onClick={() => actions.removeItem(meal.id)}>
+                    <i className="fa-solid fa-trash fa-xs"></i>
+
+//   const handlePaymentMethodChange = (method) => {
+//     setPaymentMethod(method);
+//   };
+//   const handleFinishOrder = () => {
+//     if (!paymentMethod) {
+//       alert("Please choose your payment method!");
+//       return;
+//     }
+//     actions.addProductToTable(tableId, store.cart);
+//     actions.createOrder(
+//       restaurantId,
+//       tableId,
+//       comment,
+//       paymentMethod,
+//       totalPrice
+//     );
+//     actions.clearCart();
+//     navigate(`/restaurants/${restaurantId}/tables/${tableId}/order-success`);
+//   };
+//   console.log("store.cart: ", store.cart);
+
+//   return (
+//     <>
+//       <Navbar />
+//       <div className="order-summary">
+//         <h2>Order Summary</h2>
+//         <ul>
+//           {store.cart.map((meal, index) => (
+//             <li key={index}>
+//               <div>{meal.name}</div>
+//               <div>x {meal.quantity}</div>
+//               <div className="butt">
+//                 {meal.quantity === 1 ? (
+//                   <>
+//                     <button
+//                       className="trash-icon"
+//                       onClick={() => actions.removeItem(meal.id)}
+//                     >
+//                       <i className="fa-solid fa-trash fa-xs"></i>
+
                     </button>
                     <button
                       className="butt1"
