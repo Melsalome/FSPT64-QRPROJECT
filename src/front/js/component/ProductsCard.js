@@ -18,7 +18,7 @@ const ProductsCard = ({menuItems, setProductId, onDeleteProduct}) => {
         <>
         
         {menuItems.map((product, index) => (
-            <div className="menu-item" key={index}>
+            <div className={`menu-item ${product.category.toLowerCase()}`} key={index}>
               <figure className='figuremenu-item'>
               <img src={product.image} alt={product.name} />
               </figure>

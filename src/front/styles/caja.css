@@ -21,6 +21,10 @@ section {
     background-size: cover;
 }
 
+.container-caja{
+    padding-left: 150px;
+}
+
 .container-ticket {
     margin-right: 10px;
     background: rgba(255, 255, 255, 0.4);
@@ -73,7 +77,10 @@ section {
 }
 
 .ticket {
-    height: 71.1%;
+    height: 70.2%;
+    margin: 2px;
+    border: 2px solid black;
+    border-radius: 6px;
 }
 
 .botones {
@@ -94,6 +101,7 @@ section {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    height: 8.5%;
 }
 
 .boton-atras {

@@ -10,7 +10,7 @@ const loginDispatcher = async (email, password) => {
             "password": password  }) 
     })
     
-    if(!response.ok) throw Error("There was a problem in the login request")
+    if(!response.ok) throw Error("Email or password incorrect.")
 
     if(response.status === 401){
      console.log(response)

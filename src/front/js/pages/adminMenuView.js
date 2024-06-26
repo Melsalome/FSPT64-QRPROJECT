@@ -9,55 +9,58 @@ import Buttondashboard from '../component/Buttondashboard';
 import { Link } from 'react-router-dom';
 
 
-  const adminMenuView = () => {
-    const {store, actions} = useContext(Context)
-   
-    const categoryName = ["All", "Starters", "Mains", "Desserts", "Drinks"];
-    const [selectedCategory, setSelectedCategory] = useState("All");
-    const [filteredItems, setFilteredItems] = useState([]);
-    const [productId, setProductId] = useState("")
-    const [openModal, setOpenModal] = useState(false)
-    
-      const handleCloseModal = () => {
-        setOpenModal(false)
-      }
+const adminMenuView = () => {
+  const { store, actions } = useContext(Context)
 
-    // console.log(filteredItems)
-  
-    const fetchProduct = async() => {
-    const products =  await actions.getProduct()
+  const categoryName = ["All", "Starters", "Mains", "Desserts", "Drinks"];
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [productId, setProductId] = useState("")
+  const [openModal, setOpenModal] = useState(false)
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+
+  // console.log(filteredItems)
+
+  const fetchProduct = async () => {
+    const products = await actions.getProduct()
     setFilteredItems(products)
-    }
+  }
 
 
-    useEffect( () => {
+  useEffect(() => {
     fetchProduct()
-  console.log(openModal)
-    },[openModal, productId])
-  
-    const handleDeleteProduct = async (id) => {
-      await actions.deleteProduct(id);
-      const updatedProducts = filteredItems.filter(product => product.id !== id);
-      setFilteredItems(updatedProducts);
-    };
+
+
+  }, [openModal, productId])
+
+  const handleDeleteProduct = async (id) => {
+    await actions.deleteProduct(id);
+    const updatedProducts = filteredItems.filter(product => product.id !== id);
+    setFilteredItems(updatedProducts);
+  };
 
   return (
-    <div className='containermenuview'>
-      <div className="menu-container">
-        <CategoriesButton categoryName={categoryName} setSelectedCategory={setSelectedCategory} setOpenModal={setOpenModal} selectedCategory={selectedCategory}/>
-        <div className='menu-items'>
-          {selectedCategory === "All" ?  <ProductsCard onDeleteProduct={handleDeleteProduct} menuItems={filteredItems} setProductId={setProductId}/> : <ProductsCard menuItems={filteredItems.filter(product => product.category === selectedCategory)} setProductId={setProductId} onDeleteProduct={handleDeleteProduct}/>} 
-        </div>
-        <div className='editModalMenu'>
-     {productId === "" ? <></> : <EditMenuModal filteredItems={filteredItems} productId={productId} setProductId={setProductId} /> }
-     { openModal ? <CreateProduct handleCloseModal={handleCloseModal} setOpenModal={setOpenModal} /> : <></> }
-     
+    <section className='section-menu'>
+      <div className='main-container'>
+        <div className="menu-container">
+          <CategoriesButton categoryName={categoryName} setSelectedCategory={setSelectedCategory} setOpenModal={setOpenModal} selectedCategory={selectedCategory} />
+          <div className='menu-items'>
+            {selectedCategory === "All" ? <ProductsCard onDeleteProduct={handleDeleteProduct} menuItems={filteredItems} setProductId={setProductId} /> : <ProductsCard menuItems={filteredItems.filter(product => product.category === selectedCategory)} setProductId={setProductId} onDeleteProduct={handleDeleteProduct} />}
+          </div>
+          <div className='editModalMenu'>
+            {productId === "" ? <></> : <EditMenuModal filteredItems={filteredItems} productId={productId} setProductId={setProductId} />}
+            { openModal ? <CreateProduct handleCloseModal={handleCloseModal} setOpenModal={setOpenModal} /> : <></> }
+          </div>
         </div>
       </div>
-     </div>
+    </section>
+
   );
 }
 
 
-    
+
 export default adminMenuView

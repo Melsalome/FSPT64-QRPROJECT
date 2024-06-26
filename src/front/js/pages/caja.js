@@ -110,7 +110,7 @@ const Caja = () => {
 
     return (
         <>
-            <section>
+            <section className="container-caja">
                 <div className="container-ticket">
                     <div className="botones-arriba">
                         <button onClick={irADashboard} className="boton-dash"><img src={iconoDash} alt="Atrás" style={{ width: '30px', height: '30px' }} /> Dashboard</button>

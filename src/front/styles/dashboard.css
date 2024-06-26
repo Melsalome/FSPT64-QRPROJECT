@@ -45,7 +45,7 @@ section{
 
 .iconos-dashboard {
     position: relative;
-    height: 43%;
+    max-height: 38.3%;
     font-weight: bold;
     color: #000000;
     display: flex;
@@ -59,4 +59,31 @@ section{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.containerHome{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 7%;
+    border-radius: 6px 6px 18px 18px;
+}
+
+.containerHome:hover{
+    background: rgb(255, 89, 89);
+    backdrop-filter: blur(15px);
+    
+}
+
+pre {
+    padding-top: 7.5%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    height: 100%;
+    font-weight: bold;
 }

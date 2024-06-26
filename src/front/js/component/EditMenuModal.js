@@ -48,6 +48,7 @@ const handleUpload = async () => {
 
 
 const onSave = async(updatedFormData) => {
+
   let imageUrl = newProductData.image;
 
     if (imageFile) {
@@ -56,6 +57,9 @@ const onSave = async(updatedFormData) => {
     }
 
 await actions.updateProductById(productId, updatedFormData.name, updatedFormData.price, updatedFormData.description, imageUrl, updatedFormData.category)
+
+
+
 
   setIsUpdated(true)
   setProductId(""),
