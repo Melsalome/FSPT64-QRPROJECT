@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import "../../styles/mesas.css";
 import iconoMesas from "../../img/icono-mesa.png";
 import iconoCanto from "../../img/barraCantoTransp.png";
 import iconoBarra from "../../img/barraVertTransp.png";
 import suelo from "../../img/suelo506.png";
-import { Context } from '../store/appContext';
-
 const Mesas = () => {
     const [mesas, setMesas] = useState([]);
     const [angulosRotacion, setAngulosRotacion] = useState({});
@@ -16,8 +14,6 @@ const Mesas = () => {
     const [anchoSala, setAnchoSala] = useState(15);
     const [tempLargoSala, setTempLargoSala] = useState('10');
     const [tempAnchoSala, setTempAnchoSala] = useState('15');
-    const {store, actions} = useContext(Context)
-
     const girarMesa = (idMesa) => {
         setAngulosRotacion((prevAngulos) => {
             const anguloActual = prevAngulos[idMesa] || 0;
@@ -28,23 +24,16 @@ const Mesas = () => {
             return { ...prevAngulos, [idMesa]: nuevoAngulo };
         });
     };
-
-    
-    const agregarMesa = async(icono) => {
+    const agregarMesa = (icono) => {
         const maxId = mesas.reduce((max, mesa) => Math.max(max, mesa.id), 0);
-       
         const nuevaMesa = {
             id: maxId + 1,
-            table_number: `${maxId + 1}`,
+            nombre: `${maxId + 1}`,
             posicion: { x: 0, y: 10 },
             icono: icono,
         };
-        console.log(actions.createNewTable(nuevaMesa.table_number))
-        await actions.createNewTable(nuevaMesa.table_number)
         setMesas([...mesas, nuevaMesa]);
     };
-
-    
     const moverMesa = (id, nuevaPosicion) => {
         setMesas(mesas.map(mesa => {
             if (mesa.id === id) {
@@ -53,20 +42,16 @@ const Mesas = () => {
             return mesa;
         }));
     };
-
     const iniciarArrastre = (e, id) => {
         e.dataTransfer.setData("text/plain", id);
         e.dataTransfer.setDragImage(e.target, 25, 25);
     };
-
     function finalizarArrastre(e) {
         e.target.style.zIndex = '';
     }
-
     const permitirSoltar = (e) => {
         e.preventDefault();
     };
-
     const actualizarTamañoSala = () => {
         const proporcion = 55;
         const nuevoAncho = anchoSala * proporcion;
@@ -77,15 +62,9 @@ const Mesas = () => {
             divSala.style.height = `${nuevoAlto}px`;
         }
     };
-
-    const eliminarMesa = async(table_number) => {
-        await actions.delete_table(table_number)
-        const updatedTables = mesas.filter(mesa => console.log(mesa.id) !== id)
-       
-        setMesas(...mesas, updatedTables);
-        
+    const eliminarMesa = (id) => {
+        setMesas(mesas.filter(mesa => mesa.id !== id));
     };
-
     const manejarSoltar = (e) => {
         e.preventDefault();
         const contenedor = e.target.getBoundingClientRect();
@@ -98,27 +77,22 @@ const Mesas = () => {
         };
         moverMesa(parseInt(id), nuevaPosicion);
     };
-
     const actualizarNombreMesa = (id, nuevoNombre) => {
         setMesas(mesasPrevias => mesasPrevias.map(mesa =>
             mesa.id === id ? { ...mesa, nombre: nuevoNombre } : mesa
         ));
     };
-
     useEffect(() => {
         if (tempLargoSala != null && tempAnchoSala != null) {
             setLargoSala(tempLargoSala);
             setAnchoSala(tempAnchoSala);
         }
     }, [tempLargoSala, tempAnchoSala]);
-
     useEffect(() => {
         actualizarTamañoSala();
     }, [largoSala, anchoSala]);
-
-
     useEffect(() => {
-        
+        // Intenta cargar el estado inicial de las mesas desde localStorage al iniciar el componente
         const mesasGuardadas = localStorage.getItem('mesas');
         const angulosGuardados = localStorage.getItem('angulosRotacion');
         const largoSalaGuardado = localStorage.getItem('largoSala');
@@ -126,7 +100,6 @@ const Mesas = () => {
         const tempLargoSalaGuardado = localStorage.getItem('tempLargoSala');
         const tempAnchoSalaGuardado = localStorage.getItem('tempAnchoSala');
         const nombreSalonGuardado = localStorage.getItem('nombreSalon');
-      
         if (mesasGuardadas) setMesas(JSON.parse(mesasGuardadas));
         if (angulosGuardados) setAngulosRotacion(JSON.parse(angulosGuardados));
         if (largoSalaGuardado) setLargoSala(JSON.parse(largoSalaGuardado));
@@ -135,9 +108,8 @@ const Mesas = () => {
         if (tempAnchoSalaGuardado) setTempAnchoSala(JSON.parse(tempAnchoSalaGuardado));
         if (nombreSalonGuardado) setNombreSalon(nombreSalonGuardado);
       }, []);
-      
       const guardarEstado = () => {
-    
+        // Guarda el estado actual en localStorage
         localStorage.setItem('mesas', JSON.stringify(mesas));
         localStorage.setItem('angulosRotacion', JSON.stringify(angulosRotacion));
         localStorage.setItem('largoSala', JSON.stringify(largoSala));
@@ -147,7 +119,6 @@ const Mesas = () => {
         localStorage.setItem('nombreSalon', nombreSalon);
         alert('Guardado con éxito');
       };
-
     return (
         <>
             <section>
@@ -179,7 +150,7 @@ const Mesas = () => {
                                         position: 'absolute',
                                         left: mesa.posicion.x,
                                         top: mesa.posicion.y,
-                                        zIndex: parseInt(mesa.table_number.replace(/\D/g, '')) || 1
+                                        zIndex: parseInt(mesa.nombre.replace(/\D/g, '')) || 1
                                     }}
                                     className="mesa-container"
                                 >
@@ -198,7 +169,7 @@ const Mesas = () => {
                                             <input
                                                 className='input-nombre-mesa'
                                                 type="text"
-                                                defaultValue={mesa.table_number}
+                                                defaultValue={mesa.nombre}
                                                 onBlur={(e) => actualizarNombreMesa(mesa.id, e.target.value)}
                                             />
                                             <button className='eliminar-mesa' onClick={() => eliminarMesa(mesa.id)} style={{ position: 'absolute', transform: 'translateX(-50%)', backgroundColor: 'red', color: 'white' }}>X</button>
@@ -252,5 +223,4 @@ const Mesas = () => {
         </>
     );
 };
-
 export default Mesas;

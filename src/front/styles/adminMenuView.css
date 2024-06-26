@@ -186,9 +186,9 @@
     margin-bottom: 0;
 }
 
-.menu-item:hover .description {
-    /* max-height: 100em;  */
-}
+/* .menu-item:hover .description {
+    max-height: 100em; 
+} */
 
 .menu-item .price {
     font-size: 20px;
