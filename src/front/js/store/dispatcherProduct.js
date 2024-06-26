@@ -6,7 +6,7 @@ import React from 'react'
 // Se le pasa el email y el password como argumento para indicar que es lo que va a recibir como parametro. 
 const productDispatcher = {
     get: async () => {
-        const response = await fetch(`http://127.0.0.1:5000/app/products`, { 
+        const response = await fetch(`${process.env.BACKEND_URL}/app/products`, { 
              method: "GET",
              headers: {'Content-Type' : 'application/json'}
         })
@@ -24,7 +24,7 @@ const productDispatcher = {
         return data
     }, 
 
-    getById: async(id) => { const response = await fetch(`http://127.0.0.1:5000/app/products/${id}`, { 
+    getById: async(id) => { const response = await fetch(`${process.env.BACKEND_URL}/app/products/${id}`, { 
         method: "GET",
         headers: {'Content-Type' : 'application/json'}
    })

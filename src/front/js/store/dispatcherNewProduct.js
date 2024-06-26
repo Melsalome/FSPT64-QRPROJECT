@@ -9,7 +9,7 @@ const newProductDispatcher = async (name, price, description, image, category) =
         "image": image,
         "category": category
     }
-    const response = await fetch(`http://127.0.0.1:5000/app/products/createproduct`, { 
+    const response = await fetch(`${process.env.BACKEND_URL}/app/products/createproduct`, { 
          method: "POST",
          headers: { "Content-Type": "application/json" },
          CORS:'Access-Control-Allow-Origin',

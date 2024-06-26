@@ -3,7 +3,7 @@ import react from 'react'
 
 const deleteProductDispatcher = async (id) => {
     
-    const response = await fetch(`http://127.0.0.1:5000/app/products/${id}`, { 
+    const response = await fetch(`${process.env.BACKEND_URL}/app/products/${id}`, { 
          method: "DELETE",
          headers: { "Content-Type": "application/json" },
          CORS:'Access-Control-Allow-Origin',
