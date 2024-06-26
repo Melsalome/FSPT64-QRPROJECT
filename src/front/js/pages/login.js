@@ -82,7 +82,7 @@ const Login = () => {
                             </div>
                         </form>
 
-                        <div>
+                        <div className="access-container">
                             <button className="r6" onClick={handleLogin}>
                                 Access
                             </button>

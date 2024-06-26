@@ -36,6 +36,7 @@ section{
 
 
 .container-login h1{
+    padding-top: 6%;
     font-size: 2.3rem;
     color: #fff;
     text-align: center;
@@ -138,6 +139,7 @@ button:hover{
     color: #fff;
     text-align: center;
     margin: 20px 0 10px;
+    height: 50px;
 }
 
 .registrar p a{
@@ -149,4 +151,8 @@ button:hover{
 
 .registrar p a:hover{
     text-decoration: underline;
+}
+
+.access-container{
+    height: 50px;
 }
