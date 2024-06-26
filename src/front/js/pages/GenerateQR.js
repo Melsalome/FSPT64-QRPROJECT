@@ -36,7 +36,7 @@ export const GenerateQR = () => {
     };
 
     return (
-        <section>
+        <section className='section-qr'>
             <div className='container-qr'>
                 <h1>Generate QR Code</h1>
 

@@ -147,10 +147,11 @@ section{
 }
 
 .numeroMesa{
-    bottom: 11px;
+    top: 35px;
     position: absolute;
-    padding-bottom: 30px;
+    padding-bottom: px;
     font-weight: bold;
+    height: 2px;
 }
 
 .input-nombre-mesa{
@@ -204,8 +205,10 @@ section{
 }
 
 .principal{
+    padding-left: 150px;
+    /* border: 1px solid #fff; */
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }

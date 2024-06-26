@@ -26,18 +26,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 			
             getTokenLogin: async (email, password) => {
-                try {
-                    const { access_token } = await loginDispatcher(email, password);
-                    if (access_token) {
-                        localStorage.setItem("token", access_token);
-                        setStore({ token: access_token });
-                        return { success: true };
-                    }
-                } catch (error) {
-                    console.error("Error en el inicio de sesión:", error);
-                    return { success: false, message: error.message || error };
-                }
-            },
+                const {access_token} = await loginDispatcher(email, password);
+                if (access_token) {
+                    localStorage.setItem("token", access_token);
+                    setStore({ token: access_token })}},
 			
 			syncTokenLocalStorage: () => {
 				const token = localStorage.getItem("token");

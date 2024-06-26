@@ -1,4 +1,6 @@
-body {
+.section-menu {
+    display: flex;
+    justify-content: flex-start;
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -7,13 +9,23 @@ body {
     background-size: 101.2%;
     background-attachment: fixed;
 }
+.main-container{
+    /* border: 1px solid lightgrey; */
+    position: relative;
+    
+    margin-left: 155px;
+    width: 98%;
+    height: 100%;
+    margin-right: 10px;
 
+}
 .menu-container {
-    background: transparent;
-    margin-left: 40px;
-    margin-right: 40px;
+    
+    /* margin-right: 20px; */
     margin-top: 25px;
-    padding: 20px;
+    
+    width: 100%;
+    min-height: 96vh;
 }
 
 .menu-header {
@@ -70,8 +82,8 @@ body {
 
 .menu-items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    gap: 0px;
 }
 
 
@@ -79,7 +91,7 @@ body {
     background: rgba(255, 255, 255, 0.70);
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     transition: transform 0.3s;
     display: flex;
@@ -107,7 +119,8 @@ body {
 
 .menu-item h3 {
     font-size: 18px;
-    color: #333;
+    color: #000000;
+    font-weight: bold;
     margin-bottom: 0px;
     height: 8%;
 }
@@ -124,10 +137,15 @@ body {
 
 
 .description {
-    max-height: 3em;
+    /* max-height: 3em; */
     overflow: hidden;
     position: relative;
     transition: max-height 0.5s ease;
+}
+.description p{
+    font-size: 15px;
+    color: #333;
+    font-weight: bold;
 }
 
 
@@ -240,6 +258,18 @@ body {
     background: rgb(60, 194, 60);
 }
 
+.starters{
+    background: linear-gradient(to bottom, rgba(0, 255, 13, 0.692) 0%,rgb(255, 255, 255, 0.70) 100%);
+}
+.mains{
+    background: linear-gradient(to bottom, rgba(250, 121, 1, 0.623) 0%,rgb(255, 255, 255, 0.70) 100%);
+}
+.desserts{
+    background: linear-gradient(to bottom, rgba(208, 1, 250, 0.623) 0%,rgb(255, 255, 255, 0.70) 100%);
+}
+.drinks{
+    background: linear-gradient(to bottom, rgba(18, 1, 250, 0.623) 0%,rgb(255, 255, 255, 0.70) 100%);
+}
 
 @MEDIA (MAX-WIDTH: 400PX) {
 

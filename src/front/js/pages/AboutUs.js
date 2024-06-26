@@ -40,9 +40,9 @@ export const teamMembers = [
 
 export const AboutUs = () => {
     return (
-        <div className="about-us-container" style={{ backgroundImage: `url(${Fondo})`, backgroundSize: 'cover' }}>
+        <div className="about-us-container" style={{ backgroundImage: `url(${Fondo})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <h1 className="title"><b>About Us</b></h1>
-            <div className="principal">
+            <div className="principal-about">
                 {teamMembers.map((member, index) => (
                     <div className="vuelta alt" key={index}>
                         <div className="card">

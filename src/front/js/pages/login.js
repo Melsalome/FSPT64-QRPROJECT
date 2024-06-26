@@ -1,116 +1,109 @@
-
-import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate, Outlet } from "react-router-dom"
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 
-
 const Login = () => {
-	const { store, actions } = useContext(Context);
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+    const { store, actions } = useContext(Context);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const navigate = useNavigate();
+    const [token, setToken] = useState();
 
-	const [showPassword, setShowPassword] = useState(false);
-	// const [checkboxChecked, setCheckboxChecked] = useState(false)
-	const navigate = useNavigate();
-	const [token, setToken] = useState()
-	const [isMounted, setIsMounted] = useState(true)
-	
-	const handleLogin = async (event) => {
-		event.preventDefault();
-		
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const handleLogin = async (event) => {
+        event.preventDefault();
 
-		if (!email || !password) {
-			alert("Todos los campos son obligatorios.");
-		} else if (!emailRegex.test(email)) {
-			alert("El email es incorrecto.");
-		} else if (password.length < 8 || password.length > 12) {
-			alert("La contraseña debe tener entre 8 y 12 caracteres.");
-		} else {
-			await actions.getTokenLogin(email, password);
-			// Check token after login attempt
-			const localStoraged = localStorage.getItem("token")
-			if (localStoraged) {
-				navigate("/app/home");
-				setToken(localStoraged)
-			} 
-		}
-	};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // useEffect(() => {
-    //     actions.syncTokenLocalStorage();
-    //     if (localStorage.getItem("token")) {
-    //         navigate("/app/login/home");
-	// 		console.log("if")
-    //     }
-		
-	// 	return () => {
-	// 		setIsMounted(false)
-	// 	}
-    // }, []);
+        if (!email || !password) {
+            alert("All fields are required.");
+        } else if (!emailRegex.test(email)) {
+            alert("Email is incorrect.");
+        } else if (password.length < 8 || password.length > 12) {
+            alert("Password must be between 8 and 12 characters.");
+        } else {
+            const result = await actions.getTokenLogin(email, password);
+            if (result.success) {
+                navigate("/app/caja");
+                setToken(localStorage.getItem("token"));
+            } else {
+                alert(result.message || "Usuario o contraseña incorrectos.");
+            }
+        }
+    };
 
-	const togglePasswordVisibility = () => {
-		setShowPassword(!showPassword);
-	}
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
-	const handleSectionCreateAccount = () => {
-		navigate("/app/signup")
-	}
-	
-	return (
-		<>
-		<section>
-			<div className="container-login">
-				<div className="formulario inputlogin">
-					{/* {store.token && store.token != "" && store.token != undefined ? navigate("/app/login/home") :(  */}
-						
-					<form action="#" method="POST">
-						<h1>Iniciar Sesión</h1>
-						
-							<div className="input-container">
-								<i className="fa-solid fa-envelope"></i>
-								<input type="text, email" value={email} onChange={(event) => { setEmail(event.target.value); }} required></input>
-								<label for="Email">Email</label>
-							</div>
+    const handleSectionCreateAccount = () => {
+        navigate("/app/signup");
+    };
 
-								<div className="input-container password">
-								<i className={`fa-solid ${showPassword ? 'fa-lock-open' : 'fa-lock'}`} onClick={togglePasswordVisibility}></i>
-								<input type={showPassword ? "text" : "password"}  value={password} onChange={(event) => { setPassword(event.target.value); }} required></input>
-									<label for="Contraseña">Contraseña</label>
-								</div>
+    return (
+        <>
+            <section>
+                <div className="container-login">
+                    <div className="formulario inputlogin">
+                        <form action="#" method="POST">
+                            <h1>Login</h1>
+                            
+                            <div className="input-container">
+                                <i className="fa-solid fa-envelope"></i>
+                                <input
+                                    type="text"
+                                    value={email}
+                                    onChange={(event) => setEmail(event.target.value)}
+                                    required
+                                ></input>
+                                <label htmlFor="Email">Email</label>
+                            </div>
 
-								<div className="olvidar">
-									<label for="forgotPassword">
-										<input type="checkbox"/> Recordar 
-										{/* <a href="#">Olvidé la contraseña</a> */}
-									</label>
-								</div>
-						</form>
+                            <div className="input-container password">
+                                <i
+                                    className={`fa-solid ${showPassword ? "fa-lock-open" : "fa-lock"}`}
+                                    onClick={togglePasswordVisibility}
+                                ></i>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
+                                    required
+                                ></input>
+                                <label htmlFor="Contraseña">Password</label>
+                            </div>
 
-						<div>
-							<button className="r6" onClick={handleLogin}>Acceder</button>
+                            <div className="olvidar">
+                                <label htmlFor="forgotPassword">
+                                    <input type="checkbox" /> Remember me
+                                </label>
+                            </div>
+                        </form>
 
-							<div className="registrar">
-								<p>No tienes cuenta? </p>
-								<button onClick={handleSectionCreateAccount}>Crea una Cuenta</button>
-							</div>
-						</div>
-						
-					
-					
-				</div>
-			</div>
-		</section>
-	
+                        <div>
+                            <button className="r6" onClick={handleLogin}>
+                                Access
+                            </button>
 
-		</>
-		
-		
-	);
-
+                            <div className="registrar">
+                                <p>Not have an account ?</p>
+                                <button onClick={handleSectionCreateAccount}>
+                                    Create account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </>
+    );
 };
-export default Login
+
+export default Login;
+
+
+
 
 
