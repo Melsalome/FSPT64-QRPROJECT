@@ -8,7 +8,7 @@ export const KitchenList = () => {
   const { restaurantId } = useParams();
   const [completedItems, setCompletedItems] = useState({});
   const [elapsedTimes, setElapsedTimes] = useState({});
-  
+  const [expandedOrders, setExpandedOrders] = useState({});
 
   useEffect(() => {
     if (restaurantId) {
@@ -20,7 +20,8 @@ export const KitchenList = () => {
     if (store.orders) {
       const initialCompletedItems = {};
       const initialElapsedTimes = {};
-      
+      const initialExpandedOrders = {};
+
       store.orders.forEach((order) => {
         if (!completedItems[order.id]) {
           initialCompletedItems[order.id] = {};
@@ -31,14 +32,18 @@ export const KitchenList = () => {
         if (!elapsedTimes[order.id]) {
           initialElapsedTimes[order.id] = 0;
         }
+        if (!expandedOrders[order.id]) {
+          initialExpandedOrders[order.id] = false;
+        }
       });
-      
+
       setCompletedItems((prevCompletedItems) => ({ ...prevCompletedItems, ...initialCompletedItems }));
       setElapsedTimes((prevElapsedTimes) => ({ ...prevElapsedTimes, ...initialElapsedTimes }));
+      setExpandedOrders((prevExpandedOrders) => ({ ...prevExpandedOrders, ...initialExpandedOrders }));
     }
   }, [store.orders]);
 
-  // Set up interval to update elapsed times
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setElapsedTimes((prevElapsedTimes) => {
@@ -51,7 +56,7 @@ export const KitchenList = () => {
         });
         return updatedElapsedTimes;
       });
-    }, 1000); // Update every second
+    }, 1000); 
 
     return () => clearInterval(interval);
   }, [store.orders]);
@@ -95,6 +100,12 @@ export const KitchenList = () => {
     return updatedElapsedTimes;
   });
 };
+const toggleExpandOrder = (orderId) => {
+  setExpandedOrders((prevExpandedOrders) => ({
+    ...prevExpandedOrders,
+    [orderId]: !prevExpandedOrders[orderId],
+  }));
+};
 
   return (
     <div className="kitchen-list">
@@ -104,38 +115,41 @@ export const KitchenList = () => {
         const isOlderThanOneMinutes = elapsedTime > 300;
 
         return (
-          <div key={order.id} className={`order-container ${isOlderThanOneMinutes ? 'order-old' : ''}`}>
+          <div key={order.id} className={`order-container ${isOlderThanOneMinutes ? 'order-old' : ''} ${expandedOrders[order.id] ? 'expanded' : ''}`}
+          onClick={() => toggleExpandOrder(order.id)}>
             <div className='order-header'>
            <div className='order-header-up'>
-              <h3>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343">
+              <p><b>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343">
                   <path d="M173-600h614l-34-120H208l-35 120Zm307-60Zm192 140H289l-11 80h404l-10-80ZM160-160l49-360h-89q-20 0-31.5-16T82-571l57-200q4-13 14-21t24-8h606q14 0 24 8t14 21l57 200q5 19-6.5 35T840-520h-88l48 360h-80l-27-200H267l-27 200h-80Z" />
-                </svg> */}
+                </svg>
                 {order.table_id}
-              </h3>
+                </b>
+              </p>
               <p>
-              {/* <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
-                <path d="M360-840v-80h240v80H360Zm80 440h80v-240h-80v240Zm40 320q-74 0-139.5-28.5T226-186q-49-49-77.5-114.5T120-440q0-74 28.5-139.5T226-694q49-49 114.5-77.5T480-800q62 0 119 20t107 58l56-56 56 56-56 56q38 50 58 107t20 119q0 74-28.5 139.5T734-186q-49 49-114.5 77.5T480-80Zm0-80q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-280Z" />
-              </svg> */}
-              {formatTime(elapsedTime)}
-            </p>
-            </div>
-            <div className='order-header-below'>
-              <p>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#434343">
                   <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-                </svg> */}
+                </svg>
                 4
               </p>
               <p>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m640-480 80 80v80H520v240l-40 40-40-40v-240H240v-80l80-80v-280h-40v-80h400v80h-40v280Zm-286 80h252l-46-46v-314H400v314l-46 46Zm126 0Z"/></svg>
                 {order.id}
               </p>
+              
+            </div>
+            <div className='order-header-below'>
+            <p>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+                <path d="M360-840v-80h240v80H360Zm80 440h80v-240h-80v240Zm40 320q-74 0-139.5-28.5T226-186q-49-49-77.5-114.5T120-440q0-74 28.5-139.5T226-694q49-49 114.5-77.5T480-800q62 0 119 20t107 58l56-56 56 56-56 56q38 50 58 107t20 119q0 74-28.5 139.5T734-186q-49 49-114.5 77.5T480-80Zm0-80q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-280Z" />
+              </svg>
+              {formatTime(elapsedTime)}
+            </p>
             </div>
             </div>
             <ul className="order-items-list">
               {order.order_items.map((item) => (
-                <li key={item.id} className={`order-item ${completedItems[order.id][item.id] ? 'completed' : ''}`}>
+                <li key={item.id} className={`order-item ${completedItems[order.id]?.[item.id] ? 'completed' : ''}`}>
                   <div className='name-quantity'>
                   <span><b>{item.quantity}</b></span>
                   <span>{item.name}</span>
@@ -144,7 +158,7 @@ export const KitchenList = () => {
                   <label>
                     <input
                       type="checkbox"
-                      checked={completedItems[order.id][item.id] || false}
+                      checked={completedItems[order.id]?.[item.id] || false}
                       onChange={() => toggleItemCompleted(order.id, item.id)}
                     />
                     
@@ -160,6 +174,7 @@ export const KitchenList = () => {
             >
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
             </button>
+         
           </div>
         );
       })}

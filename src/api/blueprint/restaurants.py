@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt, jwt_required, create_access_token
+from datetime import datetime
 
-from api.modelUser import User, db, Restaurant, Table, Menu, Order, OrderItem
+from api.modelUser import User, db, Restaurant, Table, Menu, Order, OrderItem, Invoice
 
 restaurants_bp = Blueprint('restaurants', __name__)
 
@@ -131,6 +132,8 @@ def delete_menu_item(restaurant_id, table_id, item_id):
 @restaurants_bp.route('/restaurants/<int:restaurant_id>/tables/<int:table_id>/orders', methods=['POST'])
 def create_order(restaurant_id, table_id):
     data = request.json
+    restaurant_id = data['restaurant_id']
+    table_id = data['table_id']
     comment = data.get('comment', '')
     payment_method = data['payment_method']
     items = data['items']
@@ -164,6 +167,7 @@ def create_order(restaurant_id, table_id):
     db.session.commit()
 
     return jsonify(order.serialize()), 201
+
 
 @restaurants_bp.route('/restaurants/<int:restaurant_id>/tables/<int:table_id>/orders/<int:order_id>', methods=['GET'])
 def get_order(restaurant_id, table_id, order_id):
@@ -231,3 +235,89 @@ def delete_order(restaurant_id, table_id, order_id):
     db.session.commit()
 
     return '', 204
+
+@restaurants_bp.route('/restaurants/<int:restaurant_id>/tables/<int:table_id>/invoices', methods=['POST'])
+def create_invoices(restaurant_id, table_id):
+    data = request.json
+    order_id = data.get('order_id')
+    if not order_id:
+        return jsonify({'error': 'Order ID is required'}), 400 
+    order = Order.query.get(order_id)
+    if not order:
+        return jsonify({'error': 'Order not found'}), 404
+ 
+    existing_invoice = Invoice.query.filter_by(order_id=order_id).first()
+    if existing_invoice:
+        return jsonify({'error': 'Invoice already exists for this order'}), 400
+      
+    total_price = order.total_price
+
+    new_invoice = Invoice(
+        order_id=order_id,
+        restaurant_id=order.restaurant_id,
+        table_id=order.table_id,
+        total_price=total_price,
+        payment_method=order.payment_method,
+       
+    )
+    db.session.add(new_invoice)
+    db.session.commit()
+
+    order_items = OrderItem.query.filter_by(order_id=order_id).all()
+    serialized_order_items = [item.serialize() for item in order_items]
+
+    response_data = {
+            'invoice_id': new_invoice.id,
+            'restaurant_id': order.restaurant_id,
+            'table_id': order.table_id,
+        
+            'total_price': total_price,
+            'payment_method': order.payment_method,
+            'order_items': serialized_order_items
+        }
+
+    return jsonify(response_data), 201
+
+@restaurants_bp.route('/restaurants/<int:restaurant_id>/tables/<int:table_id>/invoices/<int:invoice_id>', methods=['GET'])
+def get_invoice(restaurant_id, table_id, invoice_id):
+    invoice = Invoice.query.get(invoice_id)
+    if not invoice:
+        return jsonify({'error': 'Invoice not found'}), 404
+
+    order_items = OrderItem.query.filter_by(order_id=invoice.order_id).all()
+    serialized_order_items = [item.serialize() for item in order_items]
+
+    response_data = {
+        'invoice_id': invoice.id,
+        'restaurant_id': invoice.restaurant_id,
+        'table_id': invoice.table_id,
+     
+        'total_price': invoice.total_price,
+        'order_items': serialized_order_items
+    }
+
+    return jsonify(response_data), 200
+
+@restaurants_bp.route('/restaurants/<int:restaurant_id>/tables/<int:table_id>/invoices', methods=['GET'])
+def get_all_invoice(restaurant_id,table_id):
+    invoices = Invoice.query.filter_by(restaurant_id=restaurant_id, table_id=table_id).all()
+    
+    if not invoices:
+        return jsonify({'error': 'No invoices found for this restaurant and table'}), 404
+    
+    serialized_invoices = []
+    for invoice in invoices:
+        order_items = OrderItem.query.filter_by(order_id=invoice.order_id).all()
+        serialized_order_items = [item.serialize() for item in order_items]
+
+        serialized_invoice = {
+            'invoice_id': invoice.id,
+            'restaurant_id': invoice.restaurant_id,
+            'table_id': invoice.table_id,
+       
+            'total_price': invoice.total_price,
+            'order_items': serialized_order_items
+        }
+        serialized_invoices.append(serialized_invoice)
+
+    return jsonify(serialized_invoices), 200

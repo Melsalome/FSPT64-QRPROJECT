@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import "../../styles/mesas.css";
 import iconoMesas from "../../img/icono-mesa.png";
 import iconoCanto from "../../img/barraCantoTransp.png";
 import iconoBarra from "../../img/barraVertTransp.png";
 import suelo from "../../img/suelo506.png";
+import { Context } from '../store/appContext';
 
 const Mesas = () => {
     const [mesas, setMesas] = useState([]);
@@ -15,6 +16,7 @@ const Mesas = () => {
     const [anchoSala, setAnchoSala] = useState(15);
     const [tempLargoSala, setTempLargoSala] = useState('10');
     const [tempAnchoSala, setTempAnchoSala] = useState('15');
+    const {store, actions} = useContext(Context)
 
     const girarMesa = (idMesa) => {
         setAngulosRotacion((prevAngulos) => {
@@ -27,17 +29,21 @@ const Mesas = () => {
         });
     };
 
-    const agregarMesa = (icono) => {
+    
+    const agregarMesa = async(icono) => {
         const maxId = mesas.reduce((max, mesa) => Math.max(max, mesa.id), 0);
+       
         const nuevaMesa = {
             id: maxId + 1,
-            nombre: `${maxId + 1}`,
+            table_number: `${maxId + 1}`,
             posicion: { x: 0, y: 10 },
             icono: icono,
         };
+        await actions.createNewTable(nuevaMesa.table_number)
         setMesas([...mesas, nuevaMesa]);
     };
 
+    
     const moverMesa = (id, nuevaPosicion) => {
         setMesas(mesas.map(mesa => {
             if (mesa.id === id) {
@@ -71,8 +77,12 @@ const Mesas = () => {
         }
     };
 
-    const eliminarMesa = (id) => {
-        setMesas(mesas.filter(mesa => mesa.id !== id));
+    const eliminarMesa = async(table_number) => {
+        await actions.delete_table(table_number)
+        const updatedTables = mesas.filter(mesa => console.log(mesa.id) !== id)
+       
+        setMesas(...mesas, updatedTables);
+        
     };
 
     const manejarSoltar = (e) => {
@@ -107,7 +117,7 @@ const Mesas = () => {
 
 
     useEffect(() => {
-        // Intenta cargar el estado inicial de las mesas desde localStorage al iniciar el componente
+        
         const mesasGuardadas = localStorage.getItem('mesas');
         const angulosGuardados = localStorage.getItem('angulosRotacion');
         const largoSalaGuardado = localStorage.getItem('largoSala');
@@ -126,7 +136,7 @@ const Mesas = () => {
       }, []);
       
       const guardarEstado = () => {
-        // Guarda el estado actual en localStorage
+    
         localStorage.setItem('mesas', JSON.stringify(mesas));
         localStorage.setItem('angulosRotacion', JSON.stringify(angulosRotacion));
         localStorage.setItem('largoSala', JSON.stringify(largoSala));
@@ -168,7 +178,7 @@ const Mesas = () => {
                                         position: 'absolute',
                                         left: mesa.posicion.x,
                                         top: mesa.posicion.y,
-                                        zIndex: parseInt(mesa.nombre.replace(/\D/g, '')) || 1
+                                        zIndex: parseInt(mesa.table_number.replace(/\D/g, '')) || 1
                                     }}
                                     className="mesa-container"
                                 >
@@ -187,7 +197,7 @@ const Mesas = () => {
                                             <input
                                                 className='input-nombre-mesa'
                                                 type="text"
-                                                defaultValue={mesa.nombre}
+                                                defaultValue={mesa.table_number}
                                                 onBlur={(e) => actualizarNombreMesa(mesa.id, e.target.value)}
                                             />
                                             <button className='eliminar-mesa' onClick={() => eliminarMesa(mesa.id)} style={{ position: 'absolute', transform: 'translateX(-50%)', backgroundColor: 'red', color: 'white' }}>X</button>

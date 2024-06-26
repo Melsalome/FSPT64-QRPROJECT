@@ -75,8 +75,24 @@ def upgrade():
         sa.ForeignKeyConstraint(['order_id'], ['order.id'], ),
         sa.PrimaryKeyConstraint('id')
     )
+
+    # op.create_table(
+    #     'invoice',
+    #     sa.Column('id', sa.Integer(), nullable=False),
+    #     sa.Column('restaurant_id', sa.Integer(), nullable=False),
+    #     sa.Column('table_id', sa.Integer(), nullable=False),
+    #     sa.Column('order_id', sa.Integer(), nullable=False),
+    #     # sa.Column('date', sa.DateTime(), nullable=False),
+    #     # sa.Column('payment_method', sa.String(50), nullable=True),
+    #     # sa.Column('total_price', sa.Float(), nullable=False),
+    #     sa.ForeignKeyConstraint(['restaurant_id'], ['restaurant.id']),
+    #     sa.ForeignKeyConstraint(['table_id'], ['table.id']),
+    #     sa.ForeignKeyConstraint(['order_id'], ['order.id']),
+    #     sa.PrimaryKeyConstraint('id')
+    # )
   
 def downgrade():
+    op.drop_table('invoice')
     op.drop_table('order_item')
     op.drop_table('order')
     # op.drop_table('user')

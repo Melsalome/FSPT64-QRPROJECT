@@ -16,17 +16,6 @@ export const Home = () => {
 		navigate("/app/login")
 	}
 
-	// useEffect(() => {
-    //     actions.syncTokenLocalStorage();
-    //     if (!localStorage.getItem("token")) {
-    //         navigate("/app/login");
-	// 		console.log("if")
-    //     }
-		
-	// 	return () => {
-	// 		setIsMounted(false)
-	// 	}
-    // }, []);
 
 	return (
 		<>

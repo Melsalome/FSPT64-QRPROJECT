@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
+
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -99,6 +101,7 @@ const Login = () => {
             </section>
         </>
     );
+
 };
 
 export default Login;

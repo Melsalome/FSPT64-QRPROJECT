@@ -1,6 +1,8 @@
+
 .section-menu {
     display: flex;
     justify-content: flex-start;
+
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -9,6 +11,7 @@
     background-size: 101.2%;
     background-attachment: fixed;
 }
+
 .main-container{
     /* border: 1px solid lightgrey; */
     position: relative;
@@ -26,6 +29,7 @@
     
     width: 100%;
     min-height: 96vh;
+
 }
 
 .menu-header {
