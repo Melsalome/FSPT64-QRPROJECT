@@ -30,7 +30,17 @@ import Caja from "./pages/caja";
 import App from "./component/app";
 import AdminMenuView from "./pages/adminMenuView";
 import EditMenuModal from "./component/EditMenuModal";
+
+
+import { Invoice } from "./pages/Invoice";
+
+import Navbarglobal from "./component/navbarglobal";
+
+
+
+
 import { RiSideBarFill } from "react-icons/ri";
+
 
 const ProtectedRoute = ({ children, role }) => {
   const token = localStorage.getItem("token");
@@ -38,9 +48,9 @@ const ProtectedRoute = ({ children, role }) => {
     return <Navigate to="/app/login" />;
   }
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken.roles);
+  // console.log(decodedToken.roles);
   if (role && decodedToken.roles !== role) {
-    return <Navigate to="/app/login" />;
+    return <Navigate to="/app/home" />;
   }
   return children;
 };
@@ -78,6 +88,44 @@ const Layout = () => {
   );
 };
 
+
+    return (
+        <>
+            <BrowserRouter basename={basename}>
+                <ScrollToTop>
+                    {/* <Navbar /> */}
+                    <Navbarglobal />
+                    <Routes>
+
+                        <Route element ={<Login/>} path="/app/login"/>
+                        <Route element={<Signup />} path="/app/signup" />
+                        <Route element ={<Home />} path="/app/home"/>
+                        <Route element={<ProtectedRoute role="admin"> <Caja />  </ProtectedRoute>} path="app/caja" />
+                    <Route element={<ProtectedRoute role="admin"> <Dashboard />  </ProtectedRoute>} path="app/dashboard" />
+                    <Route element={<ProtectedRoute role="admin"> <Mesas />  </ProtectedRoute>} path="app/mesas" />
+                    <Route element={<ProtectedRoute role="admin"> <AdminMenuView />  </ProtectedRoute>} path="app/adminmenu" />
+                    <Route element={<ProtectedRoute role="admin"> <Menu />  </ProtectedRoute>} path="/restaurants/:restaurantId/tables/:tableId/menu" />
+                    <Route element={<ProtectedRoute role="admin"> <OrderSummary />  </ProtectedRoute>} path="/restaurants/:restaurantId/tables/:tableId/order-summary" />
+                    <Route element={<ProtectedRoute role="admin"> <OrderSuccess />  </ProtectedRoute>} path="/restaurants/:restaurantId/tables/:tableId/order-success"/>
+                        <Route element={<AboutUs />} path="/about-us" />
+
+
+
+                        <Route element={<GenerateQR />} path="app/generate-qr" />
+                        <Route element={<KitchenList />} path="app/restaurants/:restaurantId/orders"  />
+                        <Route element={<Invoice />} path="app/restaurants/:restaurantId/tables/:tableId/invoices/:invoiceId"  />
+
+
+                        <Route element={<h1>Not found!</h1>} />
+                    </Routes>
+                    
+                    {/* <Footer /> */}
+                </ScrollToTop>
+            </BrowserRouter>
+          </>
+    );
+
+
 const AppWrapper = () => {
   const basename = process.env.BASENAME || "";
   return (
@@ -85,6 +133,7 @@ const AppWrapper = () => {
       <Layout />
     </BrowserRouter>
   );
+
 };
 
 export default injectContext(AppWrapper);

@@ -14,7 +14,7 @@ export const OrderSuccess = () => {
                     Your order has been placed successfully!
                 </div>
                 <br />
-                <Link to={`/app/restaurants/${restaurantId}/tables/${tableId}/menu`}>
+                <Link to={`/restaurants/${restaurantId}/tables/${tableId}/menu`}>
                     <button className="button1">Back to Menu</button>
                 </Link>
             </div>

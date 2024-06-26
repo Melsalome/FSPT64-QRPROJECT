@@ -23,7 +23,7 @@ const loginDispatcher = async (email, password) => {
     // Guarda el token en el LocalStorage
     // También deberías almacenar el usuario en la store utilizando la función setItem
     localStorage.setItem("token", data.token);
-    console.log(data)
+//     console.log(data.access_token)
     return data
 }
 

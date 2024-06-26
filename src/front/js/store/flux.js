@@ -10,22 +10,30 @@ import { dispatcherOrder } from "./dispatcherOrder";
 import signupDispatcher from "./dispatcherSignup";
 // import newTableDispatcher from "./dispatcherTable";
 
+import { dispatcherInvoice } from "./dispatcherInvoice";
+
+
+import dispatcherTable from "./dispatcherTable";
+import sesionsDispatcher from "./dispatcherSesions";
+
 
 const getState = ({ getStore, getActions, setStore }) => {
-	return {
-		store: {
-            product:[],
-			token: null,
-			register: null,
-			menu: [],
+    return {
+        store: {
+            product: [],
+            token: null,
+            register: null,
+            menu: [],
             cart: [],
             totalAmount: 0,
-            orders: []
-		},
-		actions: {
-		
-			
+            orders: [],
+            invoices: []
+        },
+        actions: {
+
+
             getTokenLogin: async (email, password) => {
+
                 try {
                     const { access_token } = await loginDispatcher(email, password);
                     if (access_token) {
@@ -61,16 +69,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getMenu: (restaurantId,tableId) => {
+
                 const store = getStore()
                 fetch(`http://127.0.0.1:5000/app/products`)
                     .then(response => response.json())
                     .then(data => {
                         setStore({ ...store, menu: data });
+
                     })
                     .catch(error => console.error('Error fetching menu:', error));
             },
 
-            createOrder: async(restaurantId, tableId, comment, paymentMethod, totalPrice) => {
+            createOrder: async (restaurantId, tableId, comment, paymentMethod, totalPrice) => {
                 const store = getStore()
                 const orderData = {
                     restaurant_id: restaurantId,
@@ -85,35 +95,78 @@ const getState = ({ getStore, getActions, setStore }) => {
                         price: meal.price,
                     }))
                 };
-        
+
+                try {
+                    const responseSession = await fetch(`http://127.0.0.1:5000/app/sessions/${tableId}/products`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            CORS: 'Access-Control-Allow-Origin',
+                            body: JSON.stringify(orderData)
+                        });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to create session');
+                    }
+
+                    const result = await response.json();
+                    setStore({ ...store, orders: [...store.orders, result] });
+                    console.log('Order created successfully2:', result);
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert('Error creating order. Please try again.');
+                }
+
+
+                //                     const result = await response.json();
+                //                     console.log('Order created successfully:', result);
+                //                     setStore({ ...store, orders: [...store.orders, result]});
+                //                     return result;
+
+                //                 } catch (error) {
+
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/restaurants/${restaurantId}/tables/${tableId}/orders`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        CORS:'Access-Control-Allow-Origin',
+                        CORS: 'Access-Control-Allow-Origin',
                         body: JSON.stringify(orderData)
                     });
-        
+
                     if (!response.ok) {
                         throw new Error('Failed to create order');
                     }
-        
+
                     const result = await response.json();
                     setStore({ ...store, orders: [...store.orders, result] });
                     console.log('Order created successfully:', result);
-                } catch (error) {
+                    return result;
+                }
+                catch (error) {
+
                     console.error('Error:', error);
                     // alert('Error creating order. Please try again.');
                 }
             },
 
+
             getOrder: async (restaurantId) => {
                 const data = await dispatcherOrder.get(restaurantId);
-				const store = getStore();
-				setStore({ ...store,orders: data}); 
-				console.log(data);
+
+                const store = getStore();
+                const ordersWithTimestamp = store.orders.map(order => ({
+                    ...order,
+                    timestamp: new Date().toISOString()
+                }));
+
+                setStore({ orders: ordersWithTimestamp });
+                setStore({ ...store, orders: data });
+                console.log(data);
+
             },
 
             updateOrder: async (restaurantId, tableId, orderId, updatedOrderData) => {
@@ -123,14 +176,14 @@ const getState = ({ getStore, getActions, setStore }) => {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        CORS:'Access-Control-Allow-Origin',
+                        CORS: 'Access-Control-Allow-Origin',
                         body: JSON.stringify(updatedOrderData)
                     });
-            
+
                     if (!response.ok) {
                         throw new Error('Failed to update order');
                     }
-            
+
                     const result = await response.json();
                     const store = getStore();
                     const updatedOrders = store.orders.map(order => order.id === orderId ? result : order);
@@ -149,13 +202,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        CORS:'Access-Control-Allow-Origin',
+                        CORS: 'Access-Control-Allow-Origin',
                     });
-            
+
                     if (!response.ok) {
                         throw new Error('Failed to delete order');
                     }
-            
+
                     const store = getStore();
                     const updatedOrders = store.orders.filter(order => order.id !== orderId);
                     setStore({ ...store, orders: updatedOrders });
@@ -165,7 +218,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                     // alert('Error deleting order. Please try again.');
                 }
             },
-       
+
+
+            removeOrderFromList: (orderId) => {
+                const store = getStore();
+                const updatedOrders = store.orders.filter(order => order.id !== orderId);
+                setStore({ ...store, orders: updatedOrders });
+            },
+
+
             addToCart: (meal, quantity = 1) => {
                 const store = getStore()
                 const existingItemIndex = store.cart.findIndex(item => item.id === meal.id);
@@ -176,7 +237,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     setStore({ ...store, cart: updatedCart });
                     console.log(store.cart)
                 } else {
-                    const updatedCart = [...store.cart, { ...meal, quantity}];
+                    const updatedCart = [...store.cart, { ...meal, quantity }];
                     setStore({ ...store, cart: updatedCart });
                     console.log(store.cart)
                 }
@@ -218,13 +279,23 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...store, cart: [], totalAmount: 0 });
             },
 
-            getProduct: async() => {
-              const data = await productDispatcher.get();
-            //   console.log(data)
-                // const store = getStore();
-                // setStore({...store, data})
-            return data
-            }, 
+
+
+            getRestaurant: (restaurantId) => {
+                const store = getStore()
+                fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        setStore({ ...store, restaurant: data });
+                    })
+                    .catch(error => console.error('Error fetching menu:', error))
+            },
+
+            getProduct: async () => {
+                const data = await productDispatcher.get();
+                return data
+            },
+
 
             getProductById: async (id) => {
                 const data = await productDispatcher.getById(id)
@@ -232,7 +303,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return data;
             },
 
-            updateProductById: async(id, name, price, description, image, category) => {
+
+            updateProductById: async (id, name, price, description, image, category) => {
+
                 const data = await productDispatcher.put(id, name, price, description, image, category)
                 return data;
             },
@@ -242,18 +315,107 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return data;
             },
 
-            deleteProduct: async(id) => {
+            deleteProduct: async (id) => {
                 const data = await deleteProductDispatcher(id);
                 return data;
             },
 
-            // createNewTable: async(table_number) => {
-            //     const data = await newTableDispatcher(table_number);
-            //     return data;
-            // }
-		
-		}
-	};
+
+            createInvoice: async (restaurantId, tableId, orderId) => {
+                const store = getStore()
+                const invoiceData = {
+                    order_id: orderId
+                };
+
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}/invoices`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        CORS: 'Access-Control-Allow-Origin',
+                        body: JSON.stringify(invoiceData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to create invoice');
+                    }
+
+                    const result = await response.json();
+                    setStore({ ...store, invoices: [...store.invoices, result] });
+                    console.log('Invoice created successfully:', result);
+                } catch (error) {
+                    console.error('Error:', error);
+                    // alert('Error creating order. Please try again.');
+                }
+            },
+            getInvoice: async (restaurantId, tableId, invoiceId) => {
+                const data = await dispatcherInvoice.get(restaurantId, tableId, invoiceId);
+                const store = getStore();
+                setStore({ ...store, invoices: [...store.invoices, data] });
+            },
+            addOrder: (newOrder) => {
+                const store = getStore();
+                setStore({ orders: [...store.orders, newOrder] });
+            },
+            createNewTable: async (table_number) => {
+                const data = await dispatcherTable.create_table(table_number);
+                return data;
+            },
+    
+            delete_table: async (table_number) => {
+                const data = await dispatcherTable.delete_table(table_number)
+                return data;
+            },
+            createClient: async (name) => {
+                const data = await sesionsDispatcher.create_client(name);
+                return data;
+            },
+            assingClient: async (idTable, idClient) => {
+                const data = await sesionsDispatcher.assing_client(idTable, idClient);
+                console.log(data);
+    
+                return data;
+            },
+            getSessions: async () => {
+                const data = await sesionsDispatcher.get();
+                return data;
+            },
+            addProductToTable: async (tableId, items) => {
+                const data = await sesionsDispatcher.add_product_to_session(
+                    tableId,
+                    items
+                );
+                console.log("dato en flux addProductToTable: ", data);
+                return data;
+            },
+    
+            getActiveSessionTable: async (table_number) => {
+                const data = await sesionsDispatcher.get_session_active(table_number);
+                console.log("dato en flux getActiveSessionTable", data);
+                return data;
+            },
+
+            getActiveSessionList: async () => {
+                const data = await sesionsDispatcher.getActiveSessions();
+                console.log("dato en flux getAllActiveSessions", data);
+                return data;
+            },
+
+            
+        }
+    }
+    
 };
+        
+
+
+        
+   
+	
+
+
+
+
 
 export default getState;

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -7,32 +8,48 @@ import { Footer } from "../component/footer";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/summary.css";
 
-
 export const OrderSummary = () => {
-    const { store, actions } = useContext(Context);
-    const [comment, setComment] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('');
-    const { restaurantId, tableId} = useParams();
+  const { store, actions } = useContext(Context);
+  const [comment, setComment] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const { restaurantId, tableId } = useParams();
 
-   
-    const totalPrice = store.cart.reduce((total, meal) => total + meal.price * meal.quantity, 0);
-    const navigate = useNavigate();
-    const handleCommentChange = (e) => {
-        setComment(e.target.value);
-    };
+  const totalPrice = store.cart.reduce(
+    (total, meal) => total + meal.price * meal.quantity,
+    0
+  );
+  const navigate = useNavigate();
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
 
     const handlePaymentMethodChange = (method) => {
         setPaymentMethod(method);
     };
-    const handleFinishOrder = () => {
+    const handleFinishOrder = async() => {
         if (!paymentMethod) {
             alert('Please choose your payment method!');
             return;
         }
 
-        actions.createOrder(restaurantId, tableId, comment, paymentMethod, totalPrice);
-        actions.clearCart();
-        navigate(`/app/restaurants/${restaurantId}/tables/${tableId}/order-success`)
+        try {
+            actions.addProductToTable(tableId, store.cart);
+            const orderResult = await actions.createOrder(restaurantId, tableId, comment, paymentMethod, totalPrice);
+        console.log('Order result:', orderResult);
+        if (orderResult && orderResult.id) {
+            const orderId = orderResult.id;
+            console.log('Order ID:', orderId);
+            const invoiceResult = await actions.createInvoice(restaurantId, tableId, orderId);
+            actions.clearCart();
+            navigate(`/restaurants/${restaurantId}/tables/${tableId}/order-success`);
+        } else {
+            throw new Error('Order result is undefined or missing the order ID');
+        }
+        } catch (error) {
+            console.error('Error finishing order:', error);
+            alert('Error finishing order. Please try again.');
+        }
      
               
                 
@@ -55,29 +72,47 @@ export const OrderSummary = () => {
                     <button className='trash-icon' onClick={() => actions.removeItem(meal.id)}>
                     <i className="fa-solid fa-trash fa-xs"></i>
                     </button>
-                    <button className="butt1" onClick={() => actions.addToCart(meal)}>+</button>
-                </>
-            ) : (
-                <>
-                    <button className="butt1" onClick={() => actions.removeFromCart(meal.id)}>−</button>
-                    <button className="butt1" onClick={() => actions.addToCart(meal)}>+</button>
-                </>
-            )}
-                            </div>
-                            
-                            <div>${(meal.price * meal.quantity).toFixed(2)}</div>
-                            
-                        </li>
-                    ))}
-                </ul>
-                <div className="total">
-                    <h5>Total Price: </h5>
-                    <h5>${totalPrice.toFixed(2)}</h5>
-                </div>
-                <div className="comments">
-                    <label htmlFor="comments">Comments:</label>
-                    <textarea id="comments" value={comment} onChange={handleCommentChange}></textarea>
-                </div>
+                    <button
+                      className="butt1"
+                      onClick={() => actions.addToCart(meal)}
+                    >
+                      +
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="butt1"
+                      onClick={() => actions.removeFromCart(meal.id)}
+                    >
+                      −
+                    </button>
+                    <button
+                      className="butt1"
+                      onClick={() => actions.addToCart(meal)}
+                    >
+                      +
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div>${(meal.price * meal.quantity).toFixed(2)}</div>
+            </li>
+          ))}
+        </ul>
+        <div className="total">
+          <h5>Total Price: </h5>
+          <h5>${totalPrice.toFixed(2)}</h5>
+        </div>
+        <div className="comments">
+          <label htmlFor="comments">Comments:</label>
+          <textarea
+            id="comments"
+            value={comment}
+            onChange={handleCommentChange}
+          ></textarea>
+        </div>
 
                 <div className="payment-method">
                     <label htmlFor="payment">Payment Method:</label>
@@ -97,7 +132,7 @@ export const OrderSummary = () => {
                     </div>
                 </div>
                 <div className='order-finish'>
-                <Link to={`/app/restaurants/${restaurantId}/tables/${tableId}/menu`}>
+                <Link to={`/restaurants/${restaurantId}/tables/${tableId}/menu`}>
                     <button className="button1">Back to Menu</button>
                 </Link>
                     <button className='button1' onClick={handleFinishOrder}>Finish</button>
@@ -110,5 +145,5 @@ export const OrderSummary = () => {
 };
 
 OrderSummary.propTypes = {
-    match: PropTypes.object
+  match: PropTypes.object,
 };
