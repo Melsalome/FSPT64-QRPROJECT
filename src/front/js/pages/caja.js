@@ -17,6 +17,7 @@ import iconoDash from "../../img/dash.png";
 import suelo from "../../img/suelo506.png";
 import { Context } from "../store/appContext";
 import Mesa from "../component/Mesa";
+import Facturas from "../component/Facturas";
 
 
 
@@ -59,13 +60,13 @@ const Caja = () => {
 
     const abrirCaja = () => {
         alert("Cash Box Opened!");
-      }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             recuperarEstado();
             await handleActiveSessionList();
-            setLoading(false); 
+            setLoading(false);
         };
 
         fetchData();
@@ -89,7 +90,7 @@ const Caja = () => {
 
     const handleActiveSessionList = async () => {
         const dataSessionList = await actions.getActiveSessionList();
-        setMesas(prevMesas => 
+        setMesas(prevMesas =>
             prevMesas.map((mesa) => {
                 const isActive = dataSessionList.some(session => session.status == 'active' && session.table_number == mesa.table_number);
                 return { ...mesa, isActive };
@@ -102,21 +103,22 @@ const Caja = () => {
     useEffect(() => {
     }, [activeSession])
 
-    
+
     useEffect(() => {
         const interval = setInterval(() => {
             handleActiveSessionList();
-        }, 3000000); 
+        }, 3000000);
 
         return () => clearInterval(interval);
     }, []);
 
-   
+
 
     return (
         <>
             <section>
-            <h1 className='section-mesas-tittle'>Cash</h1>
+
+                <h1 className='section-mesas-tittle'>Cash</h1>
                 <div className="container-ticket">
                     <div className="botones-arriba">
                         {/* <button onClick={irADashboard} className="boton-dash"><img src={iconoDash} alt="Atrás" style={{ width: '30px', height: '30px' }} /> Dashboard</button> */}
@@ -138,6 +140,7 @@ const Caja = () => {
                                             <li>Empty.</li>
                                         )}
                                     </ul>
+                                    <Facturas />
 
                                     <h2></h2>
                                 </div>
@@ -156,7 +159,7 @@ const Caja = () => {
                 {!mostrarCarta ? (
                     <div className="container-caja-mesas" style={{ backgroundImage: `url(${suelo})`, backgroundSize: '110px', backgroundPosition: 'center' }}>
                         {mesas.map((mesa) => (
-                            <Mesa key={mesa.id} mesa={mesa} isSelected={selectedTable == mesa.table_number} onClick={() => handleActiveSession(mesa.table_number)} angulo={angulosRotacion[mesa.id]}/>
+                            <Mesa key={mesa.id} mesa={mesa} isSelected={selectedTable == mesa.table_number} onClick={() => handleActiveSession(mesa.table_number)} angulo={angulosRotacion[mesa.id]} />
                             // <div
                             //     key={mesa.id}
                             //     style={{
