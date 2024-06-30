@@ -16,8 +16,8 @@ const Mesa = ({ mesa, onClick, angulo, isSelected, onDeselect }) => {
             style={{
                 color: 'white',
                 position: 'absolute',
-                left: `${mesa.posicion.x}px`,
-                top: `${mesa.posicion.y}px`,
+                left: `${mesa.position_x}px`,
+                top: `${mesa.position_y}px`,
                 visibility: 'visible'
             }}
             className="mesa-container"

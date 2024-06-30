@@ -17,6 +17,9 @@ import iconoDash from "../../img/dash.png";
 import suelo from "../../img/suelo506.png";
 import { Context } from "../store/appContext";
 import Mesa from "../component/Mesa";
+import mesagreen from "../../img/mesagreen.png"
+
+
 
 
 const Caja = () => {
@@ -29,11 +32,7 @@ const Caja = () => {
     const [activeSession, setActiveSession] = useState({ id_table: 1, products: [] })
     const [loading, setLoading] = useState(true)
     const [tableList, setTableList] = useState([])
-    const [selectedTable, setSelectedTable] = useState(null)
-    const [mesaSeleccionada, setMesaSeleccionada] = useState(null);
-
-    const navigate = useNavigate();
-
+    
     const recuperarEstado = async() => {
         const largo = JSON.parse(localStorage.getItem('largoSala')) || '600px';
         const ancho = JSON.parse(localStorage.getItem('anchoSala')) || '600px';
@@ -47,11 +46,8 @@ const Caja = () => {
         setAngulosRotacion(angulosGuardados);
     };
 
-    
+   
 
-    const irADashboard = () => {
-        navigate('../app/dashboard');
-    };
 
     const manejarClickAnadir = () => {
         setMostrarCarta(true);
@@ -63,13 +59,13 @@ const Caja = () => {
 
     const abrirCaja = () => {
         alert("Cash Box Opened!");
-    }
+      }
 
     useEffect(() => {
         const fetchData = async () => {
             recuperarEstado();
             await handleActiveSessionList();
-            setLoading(false);
+            setLoading(false); 
         };
 console.log(store.tableList)
         fetchData();
@@ -93,54 +89,34 @@ console.log(store.tableList)
 
     const handleActiveSessionList = async () => {
         const dataSessionList = await actions.getActiveSessionList();
-        setMesas(prevMesas =>
+        setMesas(prevMesas => 
             prevMesas.map((mesa) => {
                 const isActive = dataSessionList.some(session => session.status == 'active' && session.table_number == mesa.table_number);
                 return { ...mesa, isActive };
             })
         );
     };
+
+
+
     useEffect(() => {
     }, [activeSession])
+
     
-
-    const handleMesaClick = (id) => {
-        setMesaSeleccionada(id);
-    };
-
-    const handleDeselect = () => {
-        setSelectedTable(null);
-        setMesaSeleccionada(null);
-    };
-
-    const handleClickOutside = (event) => {
-        // Verifica si el clic fue fuera de las mesas
-        if (!event.target.closest('.mesa-container')) {
-            handleDeselect(); // Deselecciona la última mesa seleccionada
-        }
-    };
-
     useEffect(() => {
         const interval = setInterval(() => {
             handleActiveSessionList();
-        }, 3000);
-
-        // OJO, TIEMPO DE ACTUALIZAR
+        }, 3000000); 
 
         return () => clearInterval(interval);
     }, []);
 
-    React.useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
+   
 
     return (
         <>
             <section>
-                <h1 className='section-mesas-tittle'>Cash</h1>
+            <h1 className='section-mesas-tittle'>Cash</h1>
                 <div className="container-ticket">
                     <div className="botones-arriba">
                         {/* <button onClick={irADashboard} className="boton-dash"><img src={iconoDash} alt="Atrás" style={{ width: '30px', height: '30px' }} /> Dashboard</button> */}
@@ -177,31 +153,36 @@ console.log(store.tableList)
 
                     </div>
                 </div>
-
-
                 {!mostrarCarta ? (
-                    
-                        
-
-                        <div className="container-caja-mesas" style={{ backgroundImage: `url(${suelo})`, backgroundSize: '110px', backgroundPosition: 'center' }}>
-                            <div className="loader" style={{ visibility: loading ? 'visible' : 'hidden' }}><span>Loading tables status</span>
-                            <div className="progress"></div>
-                        </div>
-                            {tableList.map((mesa) => (
-                                <Mesa
-                                    key={mesa.id}
-                                    mesa={mesa}
-                                    isSelected={selectedTable === mesa.table_number || mesaSeleccionada === mesa.id}
-                                    onDeselect={handleDeselect}
-                                    onClick={() => { 
-                                        handleActiveSession(mesa.table_number); 
-                                        handleMesaClick(mesa.id); 
+                    <div className="container-caja-mesas" style={{ backgroundImage: `url(${suelo})`, backgroundSize: '110px', backgroundPosition: 'center' }}>
+                        {tableList.map((mesa) => (
+                            // <Mesa key={mesa.id} mesa={mesa} isSelected={selectedTable == mesa.table_number} onClick={() => handleActiveSession(mesa.table_number)} angulo={angulosRotacion[mesa.id]}/>
+                            <div
+                                key={mesa.id}
+                                style={{
+                                    color: 'white',
+                                    position: 'absolute',
+                                    left: `${mesa.position_x}px`,
+                                    top: `${mesa.position_y}px`,
+                                    visibility: loading ? 'hidden' : 'visible'
+                                }}
+                                className="mesa-container"
+                                onClick={() => handleActiveSession(mesa.table_number)}>
+                                <img
+                                    src={mesa.isActive ? mesagreen : iconoMesas}
+                                    alt="Mesa"
+                                    style={{
+                                        width: '60px',
+                                        height: '60px',
+                                        transform: `rotate(${angulosRotacion[mesa.id] || 0}deg)`,
+                                        transition: 'transform 0.3s ease-in-out'
                                     }}
-                                    angulo={angulosRotacion[mesa.id]}
                                 />
-                            ))}
-                        </div>
-                    
+                                <div className="numeroMesa">{mesa.table_number}</div>
+                            </div>
+
+                        ))}
+                    </div>
                 ) : (
                     <div className="carta-caja">
                         <h1>Carta</h1>
@@ -213,8 +194,3 @@ console.log(store.tableList)
 };
 
 export default Caja;
-
-
-
-
-
