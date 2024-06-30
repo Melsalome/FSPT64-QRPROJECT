@@ -36,23 +36,23 @@ const Mesas = () => {
         const nuevaMesa = {
             id: maxId + 1,
             table_number: `${maxId + 1}`,
-            posicion: { x: 0, y: 10 },
+            position_x: 0,
+            position_y: 10,
             icono: icono,
         };
-        await actions.createNewTable(nuevaMesa.table_number)
+        await actions.createNewTable(nuevaMesa)
         setMesas([...mesas, nuevaMesa]);
     };
-
-    
-    const moverMesa = (id, nuevaPosicion) => {
-        setMesas(mesas.map(mesa => {
-            if (mesa.id === id) {
-                return { ...mesa, posicion: nuevaPosicion };
+ 
+    const moverMesa = async (id, nuevaPosicion) => {
+        const mesa = mesas.find(mesa => mesa.id === id);
+        if (mesa) {
+            const response = await actions.updateTablePosition(id, nuevaPosicion);
+            if (response) {
+                setMesas(mesas.map(mesa => mesa.id === id ? { ...mesa, position_x: nuevaPosicion.x, position_y: nuevaPosicion.y } : mesa));
             }
-            return mesa;
-        }));
+        }
     };
-
     const iniciarArrastre = (e, id) => {
         e.dataTransfer.setData("text/plain", id);
         e.dataTransfer.setDragImage(e.target, 25, 25);
@@ -79,10 +79,7 @@ const Mesas = () => {
 
     const eliminarMesa = async(table_number) => {
         await actions.delete_table(table_number)
-        const updatedTables = mesas.filter(mesa => console.log(mesa.id) !== id)
-       
-        setMesas(...mesas, updatedTables);
-        
+        setMesas(mesas.filter(mesa => mesa.table_number !== table_number))
     };
 
     const manejarSoltar = (e) => {
@@ -95,13 +92,13 @@ const Mesas = () => {
             x: e.clientX - contenedor.left - ajusteX,
             y: e.clientY - contenedor.top - ajusteY
         };
+        console.log(id)
         moverMesa(parseInt(id), nuevaPosicion);
     };
 
-    const actualizarNombreMesa = (id, nuevoNombre) => {
-        setMesas(mesasPrevias => mesasPrevias.map(mesa =>
-            mesa.id === id ? { ...mesa, nombre: nuevoNombre } : mesa
-        ));
+    const actualizarNombreMesa = async(id, nuevoNombre) => {
+       await actions.updateTableNumber(id, nuevoNombre)
+       
     };
 
     useEffect(() => {
@@ -116,37 +113,17 @@ const Mesas = () => {
     }, [largoSala, anchoSala]);
 
 
-    useEffect(() => {
+    const fetchTables = async () => {
+        const tables = await actions.getTableList();
+        console.log(tables)
+        setMesas(tables);
         
-        const mesasGuardadas = localStorage.getItem('mesas');
-        const angulosGuardados = localStorage.getItem('angulosRotacion');
-        const largoSalaGuardado = localStorage.getItem('largoSala');
-        const anchoSalaGuardado = localStorage.getItem('anchoSala');
-        const tempLargoSalaGuardado = localStorage.getItem('tempLargoSala');
-        const tempAnchoSalaGuardado = localStorage.getItem('tempAnchoSala');
-        const nombreSalonGuardado = localStorage.getItem('nombreSalon');
-      
-        if (mesasGuardadas) setMesas(JSON.parse(mesasGuardadas));
-        if (angulosGuardados) setAngulosRotacion(JSON.parse(angulosGuardados));
-        if (largoSalaGuardado) setLargoSala(JSON.parse(largoSalaGuardado));
-        if (anchoSalaGuardado) setAnchoSala(JSON.parse(anchoSalaGuardado));
-        if (tempLargoSalaGuardado) setTempLargoSala(JSON.parse(tempLargoSalaGuardado));
-        if (tempAnchoSalaGuardado) setTempAnchoSala(JSON.parse(tempAnchoSalaGuardado));
-        if (nombreSalonGuardado) setNombreSalon(nombreSalonGuardado);
-      }, []);
-      
-      const guardarEstado = () => {
-    
-        localStorage.setItem('mesas', JSON.stringify(mesas));
-        localStorage.setItem('angulosRotacion', JSON.stringify(angulosRotacion));
-        localStorage.setItem('largoSala', JSON.stringify(largoSala));
-        localStorage.setItem('anchoSala', JSON.stringify(anchoSala));
-        localStorage.setItem('tempLargoSala', JSON.stringify(tempLargoSala));
-        localStorage.setItem('tempAnchoSala', JSON.stringify(tempAnchoSala));
-        localStorage.setItem('nombreSalon', nombreSalon);
-        alert('Saved successfully.');
-      };
+      }
 
+    useEffect(() => {
+      fetchTables();
+      
+    }, []);
     return (
         <>
         
@@ -178,14 +155,14 @@ const Mesas = () => {
                                         cursor: 'grab',
                                         color: 'white',
                                         position: 'absolute',
-                                        left: mesa.posicion.x,
-                                        top: mesa.posicion.y,
-                                        zIndex: parseInt(mesa.table_number.replace(/\D/g, '')) || 1
+                                        left: mesa.position_x,
+                                        top: mesa.position_y,
+                                        zIndex: parseInt(mesa.table_number.toString().replace(/\D/g, '')) || 1
                                     }}
                                     className="mesa-container"
                                 >
                                     <img
-                                        src={mesa.icono}
+                                        src={mesa.icon}
                                         alt="Mesa"
                                         style={{
                                             width: '60px',
@@ -202,7 +179,7 @@ const Mesas = () => {
                                                 defaultValue={mesa.table_number}
                                                 onBlur={(e) => actualizarNombreMesa(mesa.id, e.target.value)}
                                             />
-                                            <button className='eliminar-mesa' onClick={() => eliminarMesa(mesa.id)} style={{ position: 'absolute', transform: 'translateX(-50%)', backgroundColor: 'red', color: 'white' }}>X</button>
+                                            <button className='eliminar-mesa' onClick={() => eliminarMesa(mesa.table_number)} style={{ position: 'absolute', transform: 'translateX(-50%)', backgroundColor: 'red', color: 'white' }}>X</button>
                                             <button className='girar-mesa' onClick={() => girarMesa(mesa.id)} style={{ position: 'absolute', transform: 'translateX(-50%)', bottom: '-20px' }}>⭮</button>
                                         </>
                                     ) : (
@@ -242,10 +219,7 @@ const Mesas = () => {
                                 }}
                                 placeholder="Ancho"
                             />
-                            <button className='guardar' onClick={guardarEstado}>Save</button>
-                            {/* <Link to="../app/dashboard" className='link-boton-dash'>
-                            <button className='salir'>Exit</button>
-                            </Link> */}
+                            <button className='guardar' onClick={ () =>{fetchTables(); alert("Tables saved succesfully!")}}>Save</button>
                         </div>
                     </div>
                 </div>

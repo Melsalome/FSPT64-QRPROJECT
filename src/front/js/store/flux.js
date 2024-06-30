@@ -31,7 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             restaurant: [],
             totalAmount: 0,
             orders: [],
-            invoices: []
+            invoices: [],
+            tableList: []
         },
         actions: {
 
@@ -351,8 +352,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore();
                 setStore({ orders: [...store.orders, newOrder] });
             },
-            createNewTable: async (table_number) => {
-                const data = await dispatcherTable.create_table(table_number);
+            createNewTable: async (table_number, position_x, position_y, icon) => {
+                const data = await dispatcherTable.create_table(table_number, position_x, position_y,icon);
                 return data;
             },
     
@@ -360,6 +361,24 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const data = await dispatcherTable.delete_table(table_number)
                 return data;
             },
+
+            getTableList: async () => {
+                const data = await dispatcherTable.getTableList()
+                const store = getStore()
+                setStore({ tableList: [...store.tableList, data]})
+                return data;
+            },
+
+            updateTablePosition: async(id, position) => {
+                const data = await dispatcherTable.updateTablePosition(id, position)
+                return data;
+            },
+
+            updateTableNumber: async(id, table_number) => {
+                const data = await dispatcherTable.updateTableNumber(id, table_number)
+                return data;
+            },
+
             createClient: async (name) => {
                 const data = await sesionsDispatcher.create_client(name);
                 return data;
@@ -410,7 +429,9 @@ const getState = ({ getStore, getActions, setStore }) => {
             updateOrderStatus: async (restaurantId, orderId) => {
                 const data = await dispatcherOrder.updateOrderStatus(restaurantId, orderId);
                 return data;
-            }
+            },
+
+
 
             
         }
