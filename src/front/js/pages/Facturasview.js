@@ -1,38 +1,87 @@
 
-import React from 'react';
+// src/pages/Facturasview.js
+import React, { useState, useEffect } from 'react';
+import { dispatcherInvoice } from '../store/dispatcherInvoice';
+import "../../styles/Facturasview.css";
 
-const Facturas = () => {
-    if (!tickets) {
-        return <div>Cargando tickets...</div>;
-    }
+const Billing = () => {
+    const [tickets, setTickets] = useState([]);
+    const [filteredTickets, setFilteredTickets] = useState([]);
+    const [filterDate, setFilterDate] = useState('');
 
-    return (
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Id Ticket</th>
-                        <th>Id Pedido</th>
-                        <th>Table Number</th>
-                        <th>Total Price</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tickets.map((ticket) => (
-                        <tr key={ticket.idTicket} onClick={() => onTicketClick(ticket)}>
-                            <td>{ticket.idTicket}</td>
-                            <td>{ticket.idPedido}</td>
-                            <td>{ticket.tableNumber}</td>
-                            <td>{ticket.totalPrice}</td>
-                            <td>{ticket.fecha}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
-};
+    useEffect(() => {
+        const fetchTickets = async () => {
+            try {
+                const response = await dispatcherInvoice.getTickets();
+                setTickets(response);
+                setFilteredTickets(response);
+            } catch (error) {
+                console.error('Error al obtener los tickets:', error);
+            }
+        };
 
-export default Facturas;
+        fetchTickets();
+    }, []);
 
+    const handleFilterChange = (event) => {
+        setFilterDate(event.target.value);
+        if (event.target.value === '') {
+            setFilteredTickets(tickets);
+        } else {
+            setFilteredTickets(tickets.filter(ticket => ticket.fecha === event.target.value));
+        }
+    };
+
+    const onTicketClick = (ticket) => {
+        console.log('Ticket seleccionado:', ticket);
+    };
+
+    if (!tickets.length) {
+        // return <div>Cargando tickets...</div>;
+
+
+        return (
+            <section className="section">
+                <div className='billings-container'>
+                    <div className='h1-date'>
+                        <h1 className='tittle'>Billings</h1>
+                        <input
+                            type="date"
+                            value={filterDate}
+                            onChange={handleFilterChange}
+                            placeholder="Filtrar por fecha"
+                            style={{ marginBottom: '20px' }}
+
+                        />
+                    </div>
+                    <div className="table-container">
+                        <table style={{ width: '60%', borderCollapse: 'collapse' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid #000' }}>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Id Ticket</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Id Pedido</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Número de Mesa</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Precio Total</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredTickets.map((ticket) => (
+                                    <tr key={ticket.idTicket} onClick={() => onTicketClick(ticket)} style={{ cursor: 'pointer', backgroundColor: '#f9f9f9' }}>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.idTicket}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.idPedido}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.tableNumber}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.totalPrice}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.fecha}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div >
+                </div>
+            </section>
+        );
+    };
+}
+
+export default Billing;

@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-*{
+* {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-section{
+section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,11 +21,11 @@ section{
     background-size: cover;
 }
 
-.containernavbarglobal{
+/* .containernavbarglobal{
     
-}
+} */
 
-.container-login{
+.container-login {
     background: rgba(5, 3, 3, 0.212);
     position: relative;
     width: 400px;
@@ -39,7 +39,7 @@ section{
 }
 
 
-.container-login h1{
+.container-login h1 {
     font-size: 2.3rem;
     color: #fff;
     text-align: center;
@@ -47,7 +47,7 @@ section{
     padding-top: 6%;
 }
 
-.input-container-login{
+.input-container-login {
     position: relative;
     margin: 30px 0;
     width: 300px;
@@ -55,12 +55,12 @@ section{
     cursor: default;
 }
 
-.password{
+.password {
     cursor: pointer;
 }
 
-.input-container-login label{
-    
+.input-container-login label {
+
     position: absolute;
     top: 50%;
     left: 5px;
@@ -72,12 +72,12 @@ section{
     font-weight: bold;
 }
 
-input:focus ~ label,
-input:valid ~ label{
+input:focus~label,
+input:valid~label {
     top: -5px;
 }
 
-.input-container-login input{
+.input-container-login input {
     width: 100%;
     height: 50px;
     background-color: transparent;
@@ -89,7 +89,7 @@ input:valid ~ label{
     padding-left: 5px;
 }
 
-.input-container-login i{
+.input-container-login i {
     position: absolute;
     color: #fff;
     font-size: 1.6rem;
@@ -99,7 +99,7 @@ input:valid ~ label{
 
 
 
-.olvidar{
+.olvidar {
     margin: -15px 0 15px;
     font-size: .9em;
     color: #fff;
@@ -107,11 +107,11 @@ input:valid ~ label{
     justify-content: center;
 }
 
-.olvidar label input{
+.olvidar label input {
     margin: 3px;
 }
 
-.olvidar label a{
+.olvidar label a {
     color: #fff;
     text-decoration: none;
     transition: .3s;
@@ -119,11 +119,11 @@ input:valid ~ label{
     margin-left: 20px;
 }
 
-.olvidar label a:hover{
+.olvidar label a:hover {
     text-decoration: underline;
 }
 
-button{
+button {
     width: 100%;
     height: 45px;
     border-radius: 40px;
@@ -136,27 +136,29 @@ button{
     transition: .45s;
 }
 
-button:hover{
+button:hover {
     opacity: .9;
 }
 
-.registrar{
+.registrar {
     font-size: .8rem;
     color: #fff;
     text-align: center;
     margin: 20px 0 10px;
     height: 2%;
 }
-.container-acceso{
+
+.container-acceso {
     height: 20%;
 }
-.registrar p a{
+
+.registrar p a {
     text-decoration: none;
     color: #fff;
     font-weight: bold;
     transition: .3s;
 }
 
-.registrar p a:hover{
+.registrar p a:hover {
     text-decoration: underline;
 }

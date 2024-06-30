@@ -347,6 +347,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore();
                 setStore({ ...store, invoices: [...store.invoices, data] });
             },
+            getTicket: async () => {
+                const data = await invoiceDispatcher.get();
+                return data
+            },
             addOrder: (newOrder) => {
                 const store = getStore();
                 setStore({ orders: [...store.orders, newOrder] });
@@ -355,7 +359,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const data = await dispatcherTable.create_table(table_number);
                 return data;
             },
-    
+
             delete_table: async (table_number) => {
                 const data = await dispatcherTable.delete_table(table_number)
                 return data;
@@ -367,7 +371,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             assingClient: async (idTable, idClient) => {
                 const data = await sesionsDispatcher.assing_client(idTable, idClient);
                 console.log(data);
-    
+
                 return data;
             },
             getSessions: async () => {
@@ -382,7 +386,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 console.log("dato en flux addProductToTable: ", data);
                 return data;
             },
-    
+
             getActiveSessionTable: async (table_number) => {
                 const data = await sesionsDispatcher.get_session_active(table_number);
                 console.log("dato en flux getActiveSessionTable", data);
@@ -412,17 +416,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                 return data;
             }
 
-            
+
         }
     }
-    
+
 };
-        
 
 
-        
-   
-	
+
+
+
+
 
 
 

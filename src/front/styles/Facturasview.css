@@ -1,0 +1,44 @@
+.section {
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.billings-container {
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background: url(https://img.freepik.com/free-photo/top-view-yummy-sweet-bagels-sugar-powdered-white-desk_140725-81098.jpg?t=st=1719518207~exp=1719521807~hmac=cb403341c4105857d2652ea0ff67a7deef79a90c4f2120486080a1f43008d1a3&w=900) no-repeat;
+    /* border-radius: 10px solid #0000ff; */
+}
+
+.h1-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 100px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.tittle {
+
+    text-decoration: underline;
+}
+
+
+
+
+/* .principal-container {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    margin-top: 20px;
+} */
