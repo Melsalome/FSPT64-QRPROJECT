@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { Navigate } from "react-router-dom";
 
 import { Home } from "./pages/home";
@@ -25,6 +25,7 @@ import Signup from "./pages/signup";
 
 import Dashboard from "./pages/dashboard";
 import Caja from "./pages/caja";
+import Billing from "./pages/Facturasview";
 
 import App from "./component/app";
 import AdminMenuView from './pages/adminMenuView';
@@ -71,6 +72,7 @@ const Layout = () => {
           <Route element={<GenerateQR />} path="/app/generate-qr" />
           <Route element={<KitchenList />} path="/app/restaurants/:restaurantId/orders" />
           <Route element={<Invoice />} path="/app/restaurants/:restaurantId/tables/:tableId/invoices/:invoiceId" />
+          <Route element={<Billing />} path="/app/billing" />
           <Route element={<h1>Not found!</h1>} />
         </Routes>
         <SidebarController />
@@ -86,7 +88,9 @@ const SidebarController = () => {
     "/app/mesas",
     "/app/adminmenu",
     "/app/about-us",
-    "/app/generate-qr"
+    "/app/generate-qr",
+    "/app/billing",
+
   ].includes(location.pathname);
 
   return showSidebar ? <Sidebar /> : null;

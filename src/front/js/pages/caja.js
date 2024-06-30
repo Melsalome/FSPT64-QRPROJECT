@@ -17,7 +17,8 @@ import iconoDash from "../../img/dash.png";
 import suelo from "../../img/suelo506.png";
 import { Context } from "../store/appContext";
 import Mesa from "../component/Mesa";
-import Facturas from "../component/Facturas";
+import mesagreen from "../../img/mesagreen.png"
+
 
 
 
@@ -30,25 +31,23 @@ const Caja = () => {
     const { store, actions } = useContext(Context)
     const [activeSession, setActiveSession] = useState({ id_table: 1, products: [] })
     const [loading, setLoading] = useState(true)
-    const [selectedTable, setSelectedTable] = useState(null)
-    const recuperarEstado = () => {
+    const [tableList, setTableList] = useState([])
+    
+    const recuperarEstado = async() => {
         const largo = JSON.parse(localStorage.getItem('largoSala')) || '600px';
         const ancho = JSON.parse(localStorage.getItem('anchoSala')) || '600px';
-        const mesasGuardadas = JSON.parse(localStorage.getItem('mesas')) || [];
         const angulosGuardados = JSON.parse(localStorage.getItem('angulosRotacion')) || {};
-
+        const data = await actions.getTableList()
+        setTableList(data) 
 
         setLargoSala(largo);
         setAnchoSala(ancho);
-        setMesas(mesasGuardadas);
+   
         setAngulosRotacion(angulosGuardados);
     };
 
-    const navigate = useNavigate();
+   
 
-    const irADashboard = () => {
-        navigate('../app/dashboard');
-    };
 
     const manejarClickAnadir = () => {
         setMostrarCarta(true);
@@ -60,15 +59,15 @@ const Caja = () => {
 
     const abrirCaja = () => {
         alert("Cash Box Opened!");
-    }
+      }
 
     useEffect(() => {
         const fetchData = async () => {
             recuperarEstado();
             await handleActiveSessionList();
-            setLoading(false);
+            setLoading(false); 
         };
-
+console.log(store.tableList)
         fetchData();
     }, []);
 
@@ -90,7 +89,7 @@ const Caja = () => {
 
     const handleActiveSessionList = async () => {
         const dataSessionList = await actions.getActiveSessionList();
-        setMesas(prevMesas =>
+        setMesas(prevMesas => 
             prevMesas.map((mesa) => {
                 const isActive = dataSessionList.some(session => session.status == 'active' && session.table_number == mesa.table_number);
                 return { ...mesa, isActive };
@@ -103,22 +102,21 @@ const Caja = () => {
     useEffect(() => {
     }, [activeSession])
 
-
+    
     useEffect(() => {
         const interval = setInterval(() => {
             handleActiveSessionList();
-        }, 3000000);
+        }, 3000000); 
 
         return () => clearInterval(interval);
     }, []);
 
-
+   
 
     return (
         <>
             <section>
-
-                <h1 className='section-mesas-tittle'>Cash</h1>
+            <h1 className='section-mesas-tittle'>Cash</h1>
                 <div className="container-ticket">
                     <div className="botones-arriba">
                         {/* <button onClick={irADashboard} className="boton-dash"><img src={iconoDash} alt="Atrás" style={{ width: '30px', height: '30px' }} /> Dashboard</button> */}
@@ -140,7 +138,6 @@ const Caja = () => {
                                             <li>Empty.</li>
                                         )}
                                     </ul>
-                                    <Facturas />
 
                                     <h2></h2>
                                 </div>
@@ -158,31 +155,31 @@ const Caja = () => {
                 </div>
                 {!mostrarCarta ? (
                     <div className="container-caja-mesas" style={{ backgroundImage: `url(${suelo})`, backgroundSize: '110px', backgroundPosition: 'center' }}>
-                        {mesas.map((mesa) => (
-                            <Mesa key={mesa.id} mesa={mesa} isSelected={selectedTable == mesa.table_number} onClick={() => handleActiveSession(mesa.table_number)} angulo={angulosRotacion[mesa.id]} />
-                            // <div
-                            //     key={mesa.id}
-                            //     style={{
-                            //         color: 'white',
-                            //         position: 'absolute',
-                            //         left: `${mesa.posicion.x}px`,
-                            //         top: `${mesa.posicion.y}px`,
-                            //         visibility: loading ? 'hidden' : 'visible'
-                            //     }}
-                            //     className="mesa-container"
-                            //     onClick={() => handleActiveSession(mesa.table_number)}>
-                            //     <img
-                            //         src={mesa.isActive ? mesagreen : mesa.icono}
-                            //         alt="Mesa"
-                            //         style={{
-                            //             width: '60px',
-                            //             height: '60px',
-                            //             transform: `rotate(${angulosRotacion[mesa.id] || 0}deg)`,
-                            //             transition: 'transform 0.3s ease-in-out'
-                            //         }}
-                            //     />
-                            //     <div className="numeroMesa">{mesa.table_number}</div>
-                            // </div>
+                        {tableList.map((mesa) => (
+                            // <Mesa key={mesa.id} mesa={mesa} isSelected={selectedTable == mesa.table_number} onClick={() => handleActiveSession(mesa.table_number)} angulo={angulosRotacion[mesa.id]}/>
+                            <div
+                                key={mesa.id}
+                                style={{
+                                    color: 'white',
+                                    position: 'absolute',
+                                    left: `${mesa.position_x}px`,
+                                    top: `${mesa.position_y}px`,
+                                    visibility: loading ? 'hidden' : 'visible'
+                                }}
+                                className="mesa-container"
+                                onClick={() => handleActiveSession(mesa.table_number)}>
+                                <img
+                                    src={mesa.isActive ? mesagreen : iconoMesas}
+                                    alt="Mesa"
+                                    style={{
+                                        width: '60px',
+                                        height: '60px',
+                                        transform: `rotate(${angulosRotacion[mesa.id] || 0}deg)`,
+                                        transition: 'transform 0.3s ease-in-out'
+                                    }}
+                                />
+                                <div className="numeroMesa">{mesa.table_number}</div>
+                            </div>
 
                         ))}
                     </div>
