@@ -58,21 +58,21 @@ const Billing = () => {
                         <table style={{ width: '60%', borderCollapse: 'collapse' }}>
                             <thead>
                                 <tr style={{ borderBottom: '2px solid #000' }}>
-                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Id Ticket</th>
-                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Id Pedido</th>
-                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Número de Mesa</th>
-                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Precio Total</th>
-                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Fecha</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}> Ticket id</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Order id</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Table number</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Total price</th>
+                                    <th style={{ padding: '8px', border: '1px solid #ddd' }}>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredTickets.map((ticket) => (
                                     <tr key={ticket.idTicket} onClick={() => onTicketClick(ticket)} style={{ cursor: 'pointer', backgroundColor: '#f9f9f9' }}>
-                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.idTicket}</td>
-                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.idPedido}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.Ticketid}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.Orderid}</td>
                                         <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.tableNumber}</td>
                                         <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.totalPrice}</td>
-                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.fecha}</td>
+                                        <td style={{ padding: '8px', border: '1px solid #ddd' }}>{ticket.date}</td>
                                     </tr>
                                 ))}
                             </tbody>
