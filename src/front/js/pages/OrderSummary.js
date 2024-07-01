@@ -40,7 +40,7 @@ export const OrderSummary = () => {
         if (orderResult && orderResult.id) {
             const orderId = orderResult.id;
             console.log('Order ID:', orderId);
-            const invoiceResult = await actions.createInvoice(restaurantId, tableId, orderId);
+            // const invoiceResult = await actions.createInvoice(restaurantId, tableId, orderId);
             actions.clearCart();
             navigate(`/restaurants/${restaurantId}/tables/${tableId}/order-success`);
         } else {

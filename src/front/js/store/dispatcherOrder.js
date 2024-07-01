@@ -22,5 +22,13 @@ export const dispatcherOrder = {
             headers:{'Content-Type':'application/json'}
         })
         return await response.json()
+    },
+
+    getOrderById: async (restaurantId, orderId) => {
+        const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableId}orders/${orderId}`, {
+            method: 'GET',
+            headers:{'Content-Type':'application/json'}
+        })
+        return await response.json();
     }
 }

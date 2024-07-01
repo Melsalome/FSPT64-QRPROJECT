@@ -145,6 +145,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     const result = await response.json();
                     setStore({ ...store, orders: [...store.orders, result] });
+                    console.log(store.orders.id)
                     console.log('Order created successfully:', result);
                     return result;
                 }
@@ -352,6 +353,11 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore();
                 setStore({ orders: [...store.orders, newOrder] });
             },
+
+            getOrderById: async (restaurantId, tableId, orderId) => {
+                const data = await dispatcherOrder.getOrderById(restaurantId, tableId, orderId)
+                return data;
+            },
             createNewTable: async (table_number, position_x, position_y, icon) => {
                 const data = await dispatcherTable.create_table(table_number, position_x, position_y,icon);
                 return data;
@@ -411,6 +417,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             getActiveSessionList: async () => {
                 const data = await sesionsDispatcher.getActiveSessions();
                 console.log("dato en flux getAllActiveSessions", data);
+                return data;
+            },
+
+            closeActiveSession: async (table_number) => {
+                const data = await sesionsDispatcher.close_session(table_number);
+                console.log("dato en flux closeActiveSession", data)
                 return data;
             },
 

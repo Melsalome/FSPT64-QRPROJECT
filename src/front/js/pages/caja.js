@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/caja.css";
 import mesasImage from '../../img/mesas.png';
 import menu from "../../img/menu.png";
@@ -32,7 +32,8 @@ const Caja = () => {
     const [activeSession, setActiveSession] = useState({ id_table: 1, products: [] })
     const [loading, setLoading] = useState(true)
     const [tableList, setTableList] = useState([])
-    
+    const [isSessionClosed, setIsSessionClosed] = useState(false)
+    const {restaurantId, table_number, orderId} = useParams()
     const recuperarEstado = async() => {
         const largo = JSON.parse(localStorage.getItem('largoSala')) || '600px';
         const ancho = JSON.parse(localStorage.getItem('anchoSala')) || '600px';
@@ -97,7 +98,9 @@ console.log(store.tableList)
         );
     };
 
-
+    // const createInvoice = async(restaurantId, table_number, orderId) =>{
+    //     await actions.createInvoice(restaurantId, table_number, orderId)
+    // } 
 
     useEffect(() => {
     }, [activeSession])
@@ -106,11 +109,23 @@ console.log(store.tableList)
     useEffect(() => {
         const interval = setInterval(() => {
             handleActiveSessionList();
-        }, 3000000); 
+        }, 30000); 
 
         return () => clearInterval(interval);
     }, []);
 
+   const dataOrder = async(restaurantId, table_number, orderId) => {
+    await actions.getOrderById()
+   }
+    
+    const handleCloseSession = async(table_number) => {
+        const closedSession= await actions.closeActiveSession(table_number)
+        console.log(closedSession)
+        setIsSessionClosed(true)
+        console.log(orderId)
+        
+        // createInvoice(1, mesas.table_number, store.order.id )
+    }
    
 
     return (
@@ -130,11 +145,16 @@ console.log(store.tableList)
                                     <h5> Table number: {activeSession.table_number}</h5>
                                     <h5> Items: ✍</h5>
                                     <ul>
-                                        {activeSession.products && activeSession.products.length > 0 ? (
-                                            activeSession.products.map((product, index) => (
-                                                <li key={index}>{product.product_name} x {product.quantity}</li>
-                                            ))
-                                        ) : (
+                                        {isSessionClosed || activeSession.products && activeSession.products.length > 0 ? (
+                                            <>
+                                        {activeSession.products.map((product, index) => (
+                                                <div>
+                                                    <li key={index}>{product.product_name} x {product.quantity}</li>
+                                               </div> 
+                                            ))}
+                                            <button onClick={ () => handleCloseSession(activeSession.table_number)}>Close Session</button>
+                                            </>
+                                            ) : (
                                             <li>Empty.</li>
                                         )}
                                     </ul>
@@ -146,7 +166,7 @@ console.log(store.tableList)
                     </div>
                     <div className="botones">
                         <button onClick={abrirCaja} className="boton-abrir-caja">Open Cash<img src={iconoLlave} alt="Atrás" style={{ width: '35px', height: '35px' }} /> </button>
-                        <button className="boton-pagar" >Pay <br></br><img src={iconoPagar} alt="Atrás" style={{ width: '35px', height: '35px' }} /></button>
+                        <button className="boton-pagar">Pay <br></br><img src={iconoPagar} alt="Atrás" style={{ width: '35px', height: '35px' }} o/></button>
                         <button className="boton-anadir" onClick={manejarClickAnadir}>Add <img src={iconoAnadir} alt="Atrás" style={{ width: '25px', height: '25px' }} /></button>
                         <button className="boton-eliminar">Delete <img src={iconoEliminar} alt="Atrás" style={{ width: '25px', height: '25px' }} /></button>
 

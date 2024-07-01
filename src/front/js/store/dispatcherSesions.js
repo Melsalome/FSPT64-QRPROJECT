@@ -104,15 +104,16 @@ const sesionsDispatcher = {
     return response.json();
   },
 
-  close_session: async (tableId) => {
-    const reqBody = {
+  close_session: async (table_number) => {
+    const requestBody = {
       table_number: table_number,
     };
-    const response = await fetch(`http://127.0.0.1:5000/app/sessions/${tableId}/close`, {
+    const response = await fetch(`http://127.0.0.1:5000/app/sessions/${table_number}/close`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reqBody)
+      body: JSON.stringify(requestBody)
     })
+    return response.json();
   }
 };
 
