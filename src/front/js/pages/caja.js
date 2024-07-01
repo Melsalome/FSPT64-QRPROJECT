@@ -68,7 +68,7 @@ const Caja = () => {
             await handleActiveSessionList();
             setLoading(false); 
         };
-console.log(store.tableList)
+
         fetchData();
     }, []);
 
@@ -98,6 +98,9 @@ console.log(store.tableList)
         );
     };
 
+    // const handleInvoiceData = async() => {
+    //     await 
+    // }
     // const createInvoice = async(restaurantId, table_number, orderId) =>{
     //     await actions.createInvoice(restaurantId, table_number, orderId)
     // } 
@@ -114,9 +117,9 @@ console.log(store.tableList)
         return () => clearInterval(interval);
     }, []);
 
-   const dataOrder = async(restaurantId, table_number, orderId) => {
-    await actions.getOrderById()
-   }
+//    const dataOrder = async(restaurantId, table_number, orderId) => {
+//     await actions.getOrderById()
+//    }
     
     const handleCloseSession = async(table_number) => {
         const closedSession= await actions.closeActiveSession(table_number)
@@ -134,7 +137,6 @@ console.log(store.tableList)
             <h1 className='section-mesas-tittle'>Cash</h1>
                 <div className="container-ticket">
                     <div className="botones-arriba">
-                        {/* <button onClick={irADashboard} className="boton-dash"><img src={iconoDash} alt="Atrás" style={{ width: '30px', height: '30px' }} /> Dashboard</button> */}
                         <button className="boton-atras" onClick={manejarClickAtras}><img src={iconoAtras} alt="Atrás" style={{ width: '20px', height: '20px' }} /> Back</button>
 
                     </div>
