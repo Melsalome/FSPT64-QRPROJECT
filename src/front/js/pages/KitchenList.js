@@ -51,7 +51,7 @@ export const KitchenList = () => {
         });
         return updatedElapsedTimes;
       });
-    }, 100000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [store.orders]);
@@ -62,7 +62,7 @@ export const KitchenList = () => {
       if (restaurantId) {
         actions.getPendingOrderList(restaurantId);
       }
-    }, 50000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [restaurantId, actions]);

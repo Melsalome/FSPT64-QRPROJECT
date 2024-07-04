@@ -17,7 +17,7 @@ import Signup from "./pages/signup";
 import Dashboard from "./pages/dashboard";
 import Caja from "./pages/caja";
 import AdminMenuView from './pages/adminMenuView';
-import { Sidebar } from "./component/sidebar";
+import { Sidebar } from "./component/Sidebar";
 
 
 
