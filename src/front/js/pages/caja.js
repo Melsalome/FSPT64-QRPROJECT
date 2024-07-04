@@ -95,6 +95,7 @@ const Caja = () => {
         if (totalToPay === 0) {
             return;
         }
+        handleCloseSession(activeSession.table_number);
         manejarClickAtras();
         abrirModal();
     };
@@ -442,7 +443,7 @@ const Caja = () => {
                                 </div>
                                 <div className="botones-pagar">
                                     <button className="boton-cash" onClick={manejarClickCash}>Cash <br /><img src={iconoMoney} alt="Cash" style={{ width: '50px', height: '50px' }} /></button>
-                                    <button className="boton-card" onClick={manejarClickCash}>Credit Card <br /><img src={iconoCard} alt="Credit Card" style={{ width: '50px', height: '50px' }} /></button>
+                                    <button className="boton-card" onClick={manejarClickAtrasConModal}>Credit Card <br /><img src={iconoCard} alt="Credit Card" style={{ width: '50px', height: '50px' }} /></button>
                                 </div>
                             </div>
                         </div>
@@ -465,4 +466,3 @@ const Caja = () => {
 };
 
 export default Caja;
-
