@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['ENV'] = os.getenv('FLASK_ENV')
-app.config['PORT'] = 3001
+# app.config['PORT'] = 3001
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
