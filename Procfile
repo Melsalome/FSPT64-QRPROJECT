@@ -1,2 +1,3 @@
 release: pipenv run upgrade
-web: gunicorn wsgi --chdir ./src/
+web: gunicorn wsgi:app --chdir ./src/ --bind 0.0.0.0:$PORT
+
