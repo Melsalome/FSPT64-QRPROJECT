@@ -2,7 +2,7 @@ import os
 from flask import jsonify
 from flask_jwt_extended import get_jwt, jwt_required
 from ..app import db
-from models import ProductTable
+from ..models import ProductTable
 
 import base64
 import json

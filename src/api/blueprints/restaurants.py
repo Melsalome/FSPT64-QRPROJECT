@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt, jwt_required, create_access_token
 from datetime import datetime, timezone
-from models import User, db, Restaurant, Table, Menu, Order, OrderItem, Invoice
+from ..models import User, db, Restaurant, Table, Menu, Order, OrderItem, Invoice
 from services.orderServices import get_active_order_list
 
 restaurants_bp = Blueprint('restaurants', __name__)
