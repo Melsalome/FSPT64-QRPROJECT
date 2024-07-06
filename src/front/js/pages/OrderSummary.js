@@ -4,7 +4,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Navbar } from "../component/navbar";
 import { Footer } from "../component/footer";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/summary.css";
 
 export const OrderSummary = () => {

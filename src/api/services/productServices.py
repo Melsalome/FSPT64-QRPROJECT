@@ -40,11 +40,18 @@ def get_product_by_id(product_id):
 
 # Eliminar un producto
 def delete_product(product_id):
-    ProductTable.query.filter_by(id_product=product_id).update({ProductTable.id_product: None})
-    product = Product.query.get(product_id)
-    if not product:
-        return None
-    
-    db.session.delete(product)
-    db.session.commit()
-    return product.to_dict()
+    try:
+        product_references = ProductTable.query.filter_by(id_product=product_id).all()
+        for reference in product_references:
+            db.session.delete(reference)
+        
+        product = Product.query.get(product_id)
+        if not product:
+            return {'message': 'Product not found'}, 404
+        
+        db.session.delete(product)
+        db.session.commit()
+        return product.to_dict()
+    except Exception as e:
+        db.session.rollback()
+        return {'message': str(e)}, 500

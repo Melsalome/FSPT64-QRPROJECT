@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import { Link,useParams } from 'react-router-dom';
-import { Navbar } from "../component/navbar";
-import { Footer } from "../component/footer";
 import { Context } from '../store/appContext';
 
 export const OrderSuccess = () => {
@@ -15,9 +13,8 @@ export const OrderSuccess = () => {
     }, 0);
     return (
         <>
-            {/* <Navbar /> */}
+            
             <div className="order-success">
-                {/* <h2>Thanks for your order</h2> */}
                 <div className="success-message">
                     Your order has been placed successfully!
                 </div>
@@ -42,7 +39,6 @@ export const OrderSuccess = () => {
                     <button className="button1" onClick={handleBackToMenu}>Back to Menu</button>
                 </Link>
             </div>
-            {/* <Footer /> */}
         </>
     );
 };
