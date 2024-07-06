@@ -6,7 +6,7 @@ from ..services.sessionServices import create_session
 from ..services.invoiceServices import generate_invoice
 from ..services.tableServices import delete_table, update_table_number
 from ..models import Table
-
+from app import db
 
 table_bp = Blueprint('tables', __name__)
 
@@ -14,7 +14,6 @@ table_bp = Blueprint('tables', __name__)
 
 @table_bp.route('/tables', methods=['POST'])
 def add_table():
-    from app import db
     body = request.json
     table_number = body.get('table_number')
     position_x = body.get('position_x')
@@ -30,14 +29,12 @@ def add_table():
 @table_bp.route('/tables', methods=['GET'])
 # @role_required('admin') 
 def get_tables_list():
-    from app import db
     tables = get_all_tables()
     return jsonify(tables), 200
 
 
 @table_bp.route('/tables/<int:table_id>/<int:client_id>/client', methods=['POST'])
 def assign_client_to_table_route(table_id,client_id):
-    from app import db
     if not client_id:
         return jsonify({"message": "Client ID is required"}), 400
     
@@ -51,7 +48,6 @@ def assign_client_to_table_route(table_id,client_id):
 
 @table_bp.route('/tables/<int:table_id>/invoice', methods=['POST'])
 def generate_invoice_route(table_id):
-    from app import db
     body = request.json
     payment_method = body.get('payment_method')
     if not payment_method:
@@ -66,7 +62,6 @@ def generate_invoice_route(table_id):
 
 @table_bp.route('/tables/<int:table_number>', methods=['DELETE'])
 def delete_table_route(table_number):
-    from app import db
     deleted_table = delete_table(table_number)
     if not deleted_table:
         return jsonify({"message": "Table not found"}), 404
@@ -76,7 +71,6 @@ def delete_table_route(table_number):
 
 @table_bp.route('/tables/<int:number_table>', methods=['PUT'])
 def update_table(number_table):
-    from app import db
     data = request.json
     table = Table.query.filter_by(table_number=number_table).first()
     if not table:
@@ -91,7 +85,6 @@ def update_table(number_table):
 
 @table_bp.route('/tables/<int:table_id>/update/number', methods=['PATCH'])
 def update_table_number_route(table_id):
-    from app import db
     body = request.json
     table_number = body.get('table_number')
     
