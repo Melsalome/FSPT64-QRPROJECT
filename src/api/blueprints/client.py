@@ -1,7 +1,7 @@
 
 from flask import Blueprint, request, jsonify
-from services.clientServices import create_client, get_client_list
-from services.productServices import update_product, delete_product
+from ..services.clientServices import create_client, get_client_list
+from ..services.productServices import update_product, delete_product
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 client_bp = Blueprint('client', __name__)

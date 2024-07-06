@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.userServices import generate_invoice
+from ..services.userServices import generate_invoice
 
 factura_bp = Blueprint('factura', __name__)
 

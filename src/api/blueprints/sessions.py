@@ -1,6 +1,6 @@
 
 from flask import Blueprint, request, jsonify
-from services.sessionServices import get_active_session, add_product_to_session, get_product_list_by_session, close_session, get_active_session_list, update_product_status
+from ..services.sessionServices import get_active_session, add_product_to_session, get_product_list_by_session, close_session, get_active_session_list, update_product_status
 
 sessions_bp = Blueprint('sessions', __name__)
 
