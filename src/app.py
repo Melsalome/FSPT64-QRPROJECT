@@ -24,11 +24,6 @@ jwt = JWTManager(app)
 CORS(app)
 
 
-# Importar los modelos para que Alembic pueda detectarlos
-def register_models():
-    from api.models import Table, Product, ProductTable, Client, Invoice, TableSession, Restaurant, Order, OrderItem
-
-register_models()
 
 from api.blueprints.table import table_bp
 from api.blueprints.product import product_bp

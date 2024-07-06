@@ -253,3 +253,5 @@ class InvoiceDetail(db.Model):
             'subtotal': self.subtotal
         }
           
+def init_db(app):
+    db.init_app(app)
