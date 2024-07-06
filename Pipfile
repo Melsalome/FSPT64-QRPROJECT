@@ -29,7 +29,7 @@ qrcode = "*"
 python_version = "3.12"
 
 [scripts]
-start="flask run -h 0.0.0.0"
+start="flask run -p 3001 -h 0.0.0.0"
 init="flask db init"
 migrate="flask db migrate"
 local="heroku local"

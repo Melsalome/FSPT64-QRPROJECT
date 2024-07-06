@@ -96,6 +96,7 @@ class Product(db.Model):
     description = db.Column(db.String(255), nullable=True)
     image = db.Column(db.String(500), nullable=True)
     category = db.Column(db.String(255))
+    product_tables = db.relationship('ProductTable', backref='product', lazy=True, cascade='all, delete-orphan')
     def to_dict(self):
         return {
             'id': self.id,
