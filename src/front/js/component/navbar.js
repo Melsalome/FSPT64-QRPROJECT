@@ -9,7 +9,7 @@ export const Navbar = ({ onClose }) => {
 
     useEffect(() => {
         actions.getRestaurant(restaurantId);
-    }, [restaurantId, actions]);
+    }, [restaurantId]);
 
     const totalAmount = store.cart.reduce((total, meal) => total + meal.price * meal.quantity, 0);
     const cartNotEmpty = store.cart.length > 0;

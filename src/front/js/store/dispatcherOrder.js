@@ -1,7 +1,7 @@
 
 export const dispatcherOrder = {
     get: async(restaurantId,tableId) => {
-        const response = await fetch (`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/orders`, {
+        const response = await fetch (`${process.env.BACKEND_URL2}/app/restaurants/${restaurantId}/orders`, {
             method: 'GET',
             headers:{'Content-Type':'application/json'}
         })
@@ -9,7 +9,7 @@ export const dispatcherOrder = {
     },
 
     getPendingOrderList: async (restaurantId) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/orders/pending`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/restaurants/${restaurantId}/orders/pending`, {
             method: 'GET',
             headers:{'Content-Type':'application/json'}
         })
@@ -17,7 +17,7 @@ export const dispatcherOrder = {
     }, 
     
     updateOrderStatus: async (restaurantId, orderId) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/${restaurantId}/pending/orders/${orderId}`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/${restaurantId}/pending/orders/${orderId}`, {
             method: 'PATCH',
             headers:{'Content-Type':'application/json'}
         })

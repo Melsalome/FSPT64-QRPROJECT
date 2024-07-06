@@ -2,7 +2,7 @@ import React from 'react'
 
 const productDispatcher = {
     get: async () => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/products`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/products`, {
             method: "GET",
             headers: { 'Content-Type': 'application/json' }
         })
@@ -19,7 +19,7 @@ const productDispatcher = {
     },
 
     getById: async (id) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/products/${id}`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/products/${id}`, {
             method: "GET",
             headers: { 'Content-Type': 'application/json' }
         })
@@ -37,7 +37,7 @@ const productDispatcher = {
         return data
     },
     put: async (id, name, price, description, image, category) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/products/${id}`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/products/${id}`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ "name": name, "price": price, "description": description, "image": image, "category": category })

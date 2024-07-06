@@ -3,7 +3,7 @@ import react from 'react'
 
 const dispatcherTable = {
     create_table: async (new_table) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/tables`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/tables`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             CORS: 'Access-Control-Allow-Origin',
@@ -18,7 +18,7 @@ const dispatcherTable = {
         return data
     },
     delete_table: async (table_number) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/tables/${table_number}`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/tables/${table_number}`, {
             method: 'DELETE',
             headers: { "Content-Type": "application/json" },
             CORS: 'Access-Control-Allow-Origin'
@@ -31,7 +31,7 @@ const dispatcherTable = {
     },
 
     getTableList: async () => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/tables`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/tables`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             CORS: 'Access-Control-Allow-Origin',
@@ -44,7 +44,7 @@ const dispatcherTable = {
     },
 
     updateTablePosition: async (table_number, position) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/tables/${table_number}`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/tables/${table_number}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
             CORS: 'Access-Control-Allow-Origin',
@@ -57,7 +57,7 @@ const dispatcherTable = {
     },
 
     updateTableNumber: async (id, table_number) => {
-        const response = await fetch(`${process.env.BACKEND_URL}/app/tables/${id}/update/number`, {
+        const response = await fetch(`${process.env.BACKEND_URL2}/app/tables/${id}/update/number`, {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
             CORS: 'Access-Control-Allow-Origin',

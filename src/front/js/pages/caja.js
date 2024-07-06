@@ -101,7 +101,7 @@ const Caja = () => {
 
     const fetchProductPrices = async () => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/app/products`);
+            const response = await fetch(`${process.env.BACKEND_URL2}/app/products`);
             const data = await response.json();
             setProductPrices(data);
         } catch (error) {

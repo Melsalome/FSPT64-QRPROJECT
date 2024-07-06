@@ -10,7 +10,7 @@ const signupDispatcher = async (restaurantName, firstName, lastName, email, pass
         "email": email,
         "password": password,
     }
-    const response = await fetch(`${process.env.BACKEND_URL}/app/register`, {
+    const response = await fetch(`${process.env.BACKEND_URL2}/app/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         CORS: 'Access-Control-Allow-Origin',

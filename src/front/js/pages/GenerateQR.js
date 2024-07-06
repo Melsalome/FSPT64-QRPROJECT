@@ -11,7 +11,7 @@ export const GenerateQR = () => {
     useEffect(() => {
         const fetchTables = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/app/tables');
+                const response = await axios.get('http://127.0.0.1:3001/app/tables');
                 const sortedTables = response.data.sort((a, b) => a.table_number - b.table_number);
                 setTables(sortedTables);
             } catch (error) {
@@ -26,7 +26,7 @@ export const GenerateQR = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/app/restaurants/${restaurantId}/tables/${tableNumber}/generate_qr`, {
+            const response = await fetch(`${process.env.BACKEND_URL2}/app/restaurants/${restaurantId}/tables/${tableNumber}/generate_qr`, {
                 method: 'GET',
             });
 

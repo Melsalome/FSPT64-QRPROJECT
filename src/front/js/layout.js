@@ -67,7 +67,7 @@ const SidebarController = () => {
 const Layout = () => {
   const basename = process.env.BASENAME || "";
 
-  if (!process.env.BACKEND_URL || process.env.BACKEND_URL === "")
+  if (!process.env.BACKEND_URL2 || process.env.BACKEND_URL2 === "")
     return <BackendURL />;
 
   return (

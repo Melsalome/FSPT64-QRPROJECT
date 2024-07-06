@@ -2,7 +2,7 @@ import React from 'react'
 
 
 const loginDispatcher = async (email, password) => {
-    const response = await fetch(`${process.env.BACKEND_URL}/app/login`, {
+    const response = await fetch(`${process.env.BACKEND_URL2}/app/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         CORS: 'Access-Control-Allow-Origin',

@@ -32,7 +32,7 @@ const MenuCategory = ({ category, meals, collapseOthers, isCollapsed }) => {
         top: scrollPosition, 
         behavior: 'smooth' 
       });
-    }, 100); 
+    }, 60000); 
   };
 
   
