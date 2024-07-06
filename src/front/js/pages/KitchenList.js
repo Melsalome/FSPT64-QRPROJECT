@@ -8,18 +8,19 @@ export const KitchenList = () => {
   const { restaurantId } = useParams();
   const [completedItems, setCompletedItems] = useState({});
   const [elapsedTimes, setElapsedTimes] = useState({});
-  const [expandedOrders, setExpandedOrders] = useState({});
+  const [expandedOrder, setExpandedOrder] = useState({});
 
   useEffect(() => {
     if (restaurantId) {
       actions.getPendingOrderList(restaurantId);
     }
   }, [restaurantId]);
+
   useEffect(() => {
     if (store.orders) {
       const initialCompletedItems = {};
       const initialElapsedTimes = {};
-      const initialExpandedOrders = {};
+      // const initialExpandedOrders = {};
 
       store.orders.forEach((order) => {
         if (!completedItems[order.id]) {
@@ -29,16 +30,19 @@ export const KitchenList = () => {
           });
         }
         if (!elapsedTimes[order.id]) {
-          initialElapsedTimes[order.id] = 0;
+          // initialElapsedTimes[order.id] = 0;
+          const createdTime = new Date(order.created_at).getTime();
+          const currentTime = new Date().getTime();
+          initialElapsedTimes[order.id] = Math.floor((currentTime - createdTime) / 1000);
         }
-        if (!expandedOrders[order.id]) {
-          initialExpandedOrders[order.id] = false;
-        }
+        // if (!expandedOrders[order.id]) {
+        //   initialExpandedOrders[order.id] = false;
+        // }
       });
 
       setCompletedItems((prevCompletedItems) => ({ ...prevCompletedItems, ...initialCompletedItems }));
       setElapsedTimes((prevElapsedTimes) => ({ ...prevElapsedTimes, ...initialElapsedTimes }));
-      setExpandedOrders((prevExpandedOrders) => ({ ...prevExpandedOrders, ...initialExpandedOrders }));
+      // setExpandedOrders((prevExpandedOrders) => ({ ...prevExpandedOrders, ...initialExpandedOrders }));
     }
   }, [store.orders]);
 
@@ -69,10 +73,17 @@ export const KitchenList = () => {
   }, [restaurantId, actions]);
 
 
+  // const formatTime = (timeInSeconds) => {
+  //   const minutes = Math.floor(timeInSeconds / 60);
+  //   const seconds = timeInSeconds % 60;
+  //   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  // };
+
   const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = timeInSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   const formatDateTime = (timestamp) => {
@@ -117,13 +128,22 @@ export const KitchenList = () => {
       delete updatedElapsedTimes[orderId];
       return updatedElapsedTimes;
     });
+    setExpandedOrder(null);
   };
 
+  // const toggleExpandOrder = (orderId, isHeaderClick) => {
+  //   if (expandedOrder !== orderId) {
+  //     setExpandedOrder(orderId);
+  //   } else if (isHeaderClick) {
+  //     setExpandedOrder(null);
+  //   }
+  // };
+
   const toggleExpandOrder = (orderId, isHeaderClick) => {
-    if (expandedOrders !== orderId) {
-      setExpandedOrders(orderId);
-    } else if (isHeaderClick) {
-      setExpandedOrders(null);
+    if (isHeaderClick) {
+      setExpandedOrder((prevOrderId) => (prevOrderId === orderId ? null : orderId));
+    } else {
+      setExpandedOrder(orderId);
     }
   };
 
@@ -138,7 +158,7 @@ export const KitchenList = () => {
         return (
           <div
             key={order.id}
-            className={`order-container ${isOlderThanOneMinutes ? 'order-old' : ''} ${expandedOrders === order.id ? 'expanded' : ''}`}
+            className={`order-container ${isOlderThanOneMinutes ? 'order-old' : ''} ${expandedOrder === order.id ? 'expanded' : ''}`}
             onClick={() => toggleExpandOrder(order.id, false)}
           >
             <div className='order-header' onClick={(e) => {

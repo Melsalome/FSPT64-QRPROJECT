@@ -76,11 +76,11 @@ const Login = () => {
 							<input type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} required></input>
 							<label htmlFor="Contraseña">Password</label>
 						</div>
-						<div className="olvidar">
+						{/* <div className="olvidar">
 							<label htmlFor="forgotPassword">
 								<input type="checkbox"/> Remember me
 							</label>
-						</div>
+						</div> */}
 						<button className="r6" onClick={handleLogin}>Access</button>
 					</form>
 					<div>
