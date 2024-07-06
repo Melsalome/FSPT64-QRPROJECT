@@ -24,8 +24,8 @@ jwt = JWTManager(app)
 CORS(app)
 
 
-# Importar los modelos para que Alembic pueda detectarlos
-from api.models import Table, Product, ProductTable, Client, Invoice, TableSession, Restaurant, Order, OrderItem
+# # Importar los modelos para que Alembic pueda detectarlos
+# from api.models import Table, Product, ProductTable, Client, Invoice, TableSession, Restaurant, Order, OrderItem
 
 from api.blueprints.table import table_bp
 from api.blueprints.product import product_bp
