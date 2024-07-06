@@ -3,9 +3,11 @@
 
 import os
 import sys
-from api.app import app as application
+
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+from api.app import app as application
 
 if __name__ == "__main__":
     application.run()

@@ -5,7 +5,7 @@ import os
 from flask import Flask, request, jsonify, url_for
 # from flask_cors import CORS
 from .utils import APIException, generate_sitemap
-from .app import app
+from api.app import app
 from .admin import setup_admin
 from .commands import setup_commands
 
