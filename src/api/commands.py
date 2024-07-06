@@ -1,7 +1,7 @@
 
 import click
 from flask_sqlalchemy import SQLAlchemy
-from models import User
+from .models import User
 db = SQLAlchemy()
 
 def setup_commands(app):
