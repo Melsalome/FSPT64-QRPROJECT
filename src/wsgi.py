@@ -4,7 +4,7 @@
 import os
 import sys
 
-from app import app as application
+from .app import app as application
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
