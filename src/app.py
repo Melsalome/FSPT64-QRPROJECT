@@ -1,4 +1,4 @@
-from init import app, db
+from init import app
 from api.blueprints.table import table_bp
 from api.blueprints.product import product_bp
 from api.blueprints.client import client_bp
