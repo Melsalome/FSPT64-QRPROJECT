@@ -14,10 +14,8 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [validatedPassword, setValidatedPassword] = useState("");
     const [restaurantName, setRestaurantName] = useState([
-        "Restaurante A",
-        "Restaurante B",
-        "Restaurante C",
-        "Restaurante D"
+        "Spain",
+        "Vietnam"
     ]);
     const [selectedRestaurant, setSelectedRestaurantName] = useState("Restaurante A");
     const [showPassword, setShowPassword] = useState(false);

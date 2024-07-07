@@ -348,8 +348,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const data = await dispatcherOrder.getOrderById(restaurantId, tableId, orderId)
                 return data;
             },
-            createNewTable: async (table_number, position_x, position_y, icon) => {
-                const data = await dispatcherTable.create_table(table_number, position_x, position_y, icon);
+            createNewTable: async (mesa) => {
+                const data = await dispatcherTable.create_table(mesa);
                 return data;
             },
 

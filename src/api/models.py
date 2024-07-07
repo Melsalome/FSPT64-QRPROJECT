@@ -24,7 +24,8 @@ class User(db.Model):
             'id': self.id,
             'email': self.email,
             'role': self.role,
-            'status': "ok"
+            'status': "ok",
+            'restaurant_name': self.restaurant_name
         }
 
 class Restaurant(db.Model):

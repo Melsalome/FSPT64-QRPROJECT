@@ -18,10 +18,11 @@ def add_table():
     position_x = body.get('position_x')
     position_y = body.get('position_y')
     icon = body.get('icon')
+    restaurant_id = body.get('restaurant_id')
     if not table_number:
         return jsonify({"message": "table_number is required"}), 400
 
-    new_table = create_table(table_number, position_x, position_y, icon)
+    new_table = create_table(table_number, position_x, position_y, icon,restaurant_id)
     return jsonify(new_table), 201
 
 

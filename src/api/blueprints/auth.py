@@ -42,7 +42,8 @@ def login():
     # Información adicional a pasar en el token
     additional_claims = {
         'email': user['email'],
-        'roles': user.get('role', [])
+        'roles': user.get('role', []),
+        'restaurant_name': user.get('restaurant_name')
     }
     access_token = create_access_token(identity=user['id'], additional_claims=additional_claims)
     return jsonify(access_token=access_token), 200

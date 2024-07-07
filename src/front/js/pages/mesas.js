@@ -16,15 +16,23 @@ const Mesas = () => {
     const [anchoSala, setAnchoSala] = useState(15);
     const [tempLargoSala, setTempLargoSala] = useState(10);
     const [tempAnchoSala, setTempAnchoSala] = useState(15);
+    const [restaurant, setRestaurant] = useState('');
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
         const savedLargoSala = localStorage.getItem('largoSala');
         const savedAnchoSala = localStorage.getItem('anchoSala');
+        const restaurantName = localStorage.getItem('restaurant_name')
         const savedAngulosRotacion = localStorage.getItem('angulosRotacion');
         if (savedLargoSala) setLargoSala(JSON.parse(savedLargoSala));
         if (savedAnchoSala) setAnchoSala(JSON.parse(savedAnchoSala));
         if (savedAngulosRotacion) setAngulosRotacion(JSON.parse(savedAngulosRotacion));
+        if (restaurantName === 'Spain'){
+            setRestaurant(2)
+        }
+        if (restaurantName === 'Vietnam'){
+            setRestaurant(1)
+        }
         setTempLargoSala(savedLargoSala ? JSON.parse(savedLargoSala) : 10);
         setTempAnchoSala(savedAnchoSala ? JSON.parse(savedAnchoSala) : 15);
     }, []);
@@ -39,12 +47,14 @@ const Mesas = () => {
 
     const agregarMesa = (icon) => {
         const maxId = tempMesas.reduce((max, mesa) => Math.max(max, mesa.id), 0);
+        
         const nuevaMesa = {
             id: maxId + 1,
             table_number: `${maxId + 1}`,
             position_x: 0,
             position_y: 10,
             icon: icon,
+            restaurant_id: restaurant
         };
         setTempMesas([...tempMesas, nuevaMesa]);
     };

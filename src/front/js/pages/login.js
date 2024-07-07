@@ -31,7 +31,7 @@ const Login = () => {
 
 				const decodedToken = jwtDecode(token);
 				localStorage.setItem("token", token);
-
+				localStorage.setItem("restaurant_name", decodedToken.restaurant_name)
 				switch(decodedToken.roles) {
 					case "admin": 
 						navigate("/app/caja");
