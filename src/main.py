@@ -39,3 +39,10 @@ def handle_invalid_usage(error):
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
+
+# this only runs if `$ python src/app.py` is executed
+if __name__ == '__main__':
+
+    PORT = int(os.environ.get('PORT', 3001))
+    app.run(host='0.0.0.0', port=PORT, debug=True)
+
