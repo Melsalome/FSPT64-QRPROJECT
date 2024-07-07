@@ -1,22 +1,3 @@
-# from init import app
-# from api.blueprints.table import table_bp
-# from api.blueprints.product import product_bp
-# from api.blueprints.client import client_bp
-# from api.blueprints.productTable import productTable_bp
-# from api.blueprints.sessions import sessions_bp
-# from api.blueprints.auth import auth_bp
-# from api.blueprints.restaurants import restaurants_bp
-# from api.blueprints.generateqr import generateqr_bp
-
-# app.register_blueprint(table_bp, url_prefix='/app')
-# app.register_blueprint(product_bp, url_prefix='/app')
-# app.register_blueprint(client_bp, url_prefix='/app')
-# app.register_blueprint(productTable_bp, url_prefix='/app')
-# app.register_blueprint(sessions_bp, url_prefix='/app')
-# app.register_blueprint(auth_bp, url_prefix='/app')
-# app.register_blueprint(restaurants_bp, url_prefix='/app')
-# app.register_blueprint(generateqr_bp, url_prefix='/app')
-
 import os
 from dotenv import load_dotenv
 from flask import Flask
@@ -40,34 +21,13 @@ app.config['PORT'] = 3001
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
-# CORS(app)
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
 
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
-# # # Importar los modelos para que Alembic pueda detectarlos
 
-# from api.blueprints.table import table_bp
-# from api.blueprints.product import product_bp
-# from api.blueprints.client import client_bp
-# from api.blueprints.productTable import productTable_bp
-# from api.blueprints.sessions import sessions_bp
-# from api.blueprints.auth import auth_bp
-# from api.blueprints.restaurants import restaurants_bp
-# from api.blueprints.generateqr import generateqr_bp
-# app.register_blueprint(table_bp, url_prefix='/app')
-# app.register_blueprint(product_bp, url_prefix='/app')
-# app.register_blueprint(client_bp, url_prefix='/app')
-# app.register_blueprint(productTable_bp, url_prefix='/app')
-# app.register_blueprint(sessions_bp, url_prefix='/app')
-# app.register_blueprint(auth_bp, url_prefix='/app')
-# app.register_blueprint(restaurants_bp, url_prefix='/app')
-# app.register_blueprint(generateqr_bp, url_prefix='/app')
-
-
-#     # Registra los modelos para que Alembic pueda detectarlos
 
   
 
