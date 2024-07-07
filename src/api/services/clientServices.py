@@ -7,8 +7,6 @@ from ..models import  Client
 import base64
 import json
 
-
-
 # Servicios de cliente
 
 # Crear un nuevo cliente

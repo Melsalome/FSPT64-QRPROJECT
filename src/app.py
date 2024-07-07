@@ -40,9 +40,13 @@ app.config['PORT'] = 3001
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
-CORS(app)
+# CORS(app)
 
+# this only runs if `$ python src/app.py` is executed
+if __name__ == '__main__':
 
+    PORT = int(os.environ.get('PORT', 3001))
+    app.run(host='0.0.0.0', port=PORT, debug=True)
 # # # Importar los modelos para que Alembic pueda detectarlos
 
 # from api.blueprints.table import table_bp
