@@ -5,8 +5,8 @@ from ..services.tableServices import create_table, get_all_tables, assign_client
 from ..services.sessionServices import create_session
 from ..services.invoiceServices import generate_invoice
 from ..services.tableServices import delete_table, update_table_number
-from ..models import Table
-from app import db
+from ..models import Table, db
+
 
 table_bp = Blueprint('tables', __name__)
 
