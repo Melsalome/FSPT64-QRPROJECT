@@ -1,12 +1,10 @@
 
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import get_jwt, jwt_required
-from ..services.tableServices import create_table, get_all_tables, assign_client_to_table
+from ..services.tableServices import create_table, get_all_tables, assign_client_to_table, update_table_position
 from ..services.sessionServices import create_session
 from ..services.invoiceServices import generate_invoice
 from ..services.tableServices import delete_table, update_table_number
-from ..models import Table
-from init import db
+
 
 
 table_bp = Blueprint('tables', __name__)
@@ -73,15 +71,16 @@ def delete_table_route(table_number):
 @table_bp.route('/tables/<int:number_table>', methods=['PUT'])
 def update_table(number_table):
     data = request.json
-    table = Table.query.filter_by(table_number=number_table).first()
-    if not table:
-        return jsonify({"error": "Table not found"}), 404
+    updated_table = update_table_position(number_table,data)
+    # table = Table.query.filter_by(table_number=number_table).first()
+    # if not table:
+    #     return jsonify({"error": "Table not found"}), 404
     
-    table.position_x = data.get('position_x', table.position_x)
-    table.position_y = data.get('position_y', table.position_y)
-    db.session.commit()
+    # table.position_x = data.get('position_x', table.position_x)
+    # table.position_y = data.get('position_y', table.position_y)
+    # db.session.commit()
     
-    return jsonify(table.to_dict()), 200
+    return jsonify(updated_table), 200
 
 
 @table_bp.route('/tables/<int:table_id>/update/number', methods=['PATCH'])

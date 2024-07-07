@@ -1,7 +1,7 @@
 
 from flask import jsonify
 from flask_jwt_extended import get_jwt, jwt_required
-from init import db
+from app import db
 from ..models import Table, ProductTable, TableSession
 
 
@@ -76,4 +76,12 @@ def update_table_number(table_id, table_number):
         db.session.commit()
     return table.to_dict() 
 
+def update_table_position(number_table, data):
+    table = Table.query.filter_by(table_number=number_table).first()
+    if not table:
+            return jsonify({"error": "Table not found"}), 404
     
+    table.position_x = data.get('position_x', table.position_x)
+    table.position_y = data.get('position_y', table.position_y)
+    db.session.commit()    
+    return table.to_dict()
