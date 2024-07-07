@@ -1,5 +1,5 @@
 from init import app, db
-from src.api.blueprints.table import table_bp
+from api.blueprints.table import table_bp
 from api.blueprints.product import product_bp
 from api.blueprints.client import client_bp
 from api.blueprints.productTable import productTable_bp
