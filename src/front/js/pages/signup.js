@@ -17,7 +17,7 @@ const Signup = () => {
         "Spain",
         "Vietnam"
     ]);
-    const [selectedRestaurant, setSelectedRestaurantName] = useState("Restaurante A");
+    const [selectedRestaurant, setSelectedRestaurantName] = useState("Spain");
     const [showPassword, setShowPassword] = useState(false);
     const [registerStatus, setRegisterStatus] = useState();
     const navigate = useNavigate();
