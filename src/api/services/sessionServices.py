@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask_jwt_extended import get_jwt, jwt_required
-from app import db
+from init import db
 from ..models import ProductTable, Table, TableSession
 from .tableServices import update_table_status, update_client_in_table
 
