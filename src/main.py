@@ -8,12 +8,30 @@ from api.utils import APIException, generate_sitemap
 from app import app
 from api.admin import setup_admin
 from api.commands import setup_commands
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 # ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 # static_file_dir = os.path.join(os.path.dirname(
 #     os.path.realpath(__file__)), '../public/')
 # app = Flask(__name__)
 # app.url_map.strict_slashes = False
+load_dotenv()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['ENV'] = os.getenv('FLASK_ENV')
+app.config['PORT'] = 3001
+
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+jwt = JWTManager(app)
+CORS(app)
 
 setup_admin(app)
 setup_commands(app)
