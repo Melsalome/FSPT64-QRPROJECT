@@ -4,8 +4,8 @@ Punto de entrada de la aplicación
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_cors import CORS
-from .utils import APIException, generate_sitemap
-from src.app import app
+from api.utils import APIException, generate_sitemap
+from init import app, db
 from api.admin import setup_admin
 from api.commands import setup_commands
 
